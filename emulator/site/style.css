@@ -1,0 +1,22 @@
+:root { color-scheme: dark; }
+html, body { margin: 0; background: #16181a; color: #c8cdc8; font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+main { max-width: 900px; margin: 0 auto; padding: 16px 12px 32px; }
+h1 { font-size: 20px; margin: 4px 0 2px; color: #e8ece8; }
+.sub { color: #8b928b; margin: 0 0 12px; }
+.bar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 8px 0; }
+button { font: inherit; background: #2a2e31; color: #dfe4df; border: 1px solid #3c4246; border-radius: 6px; padding: 5px 10px; cursor: pointer; }
+button:hover { background: #343a3e; }
+button:active { background: #3f474c; }
+.keys button { font-family: Menlo, monospace; font-size: 13px; padding: 5px 8px; }
+#status { margin-left: auto; color: #8b928b; font: 12px Menlo, monospace; }
+#wrap { background: #0b0f0b; border: 1px solid #2c312c; border-radius: 8px; padding: 10px; overflow-x: auto; }
+#term { width: max-content; }
+details { margin-top: 14px; color: #a9b0a9; }
+summary { cursor: pointer; color: #dfe4df; }
+code { font-family: Menlo, monospace; color: #9fe89f; }
+table { border-collapse: collapse; margin: 6px 0; }
+td { padding: 2px 12px 2px 0; vertical-align: top; }
+
+.hub-link { margin: 0 0 10px; }
+.hub-link a { color: #9fe89f; text-decoration: none; }
+.hub-link a:hover { text-decoration: underline; }

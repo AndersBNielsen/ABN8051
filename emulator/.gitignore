@@ -1,0 +1,7 @@
+# firmware build products: only the ROM images are kept
+firmware/build/*
+!firmware/build/dos51.ihx
+!firmware/build/dos51.bin
+.DS_Store
+node_modules/
+dist/
