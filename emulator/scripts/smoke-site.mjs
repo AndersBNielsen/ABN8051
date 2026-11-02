@@ -14,7 +14,7 @@ const fatimg = (...a) => execFileSync('python3', [path.join(ROOT, 'scripts/fatim
 
 const url = process.argv[2];
 const shot = process.argv[3];
-const browser = await chromium.launch();
+const browser = await chromium.launch({ executablePath: process.env.PLAYWRIGHT_CHROME || undefined });
 const errors = [];
 const requests = [];
 
@@ -76,6 +76,17 @@ async function run(viewport, label) {
     // ... and so does the SD card (IndexedDB)
     await type('sdget sd.txt\rcat sd.txt\r');
     await waitFor(/cat sd\.txt\s+sd card test\s+dos51\$\s*$/m);
+    // The separate SD-card game must assemble and run in the real browser.
+    await type('sdget tetris.asm\r');
+    await waitFor(/dos51\$\s*$/m);
+    await type('asm -r tetris.asm\r');
+    await waitFor(/Press a key/);
+    await type('g');
+    await waitFor(/\[\]/);
+    await page.waitForTimeout(250);
+    if (shot) await page.screenshot({ path: shot });
+    await type('q');
+    await waitFor(/dos51\$\s*$/m);
     // insert a card image made on the host
     const host = path.join(tmp, 'host.img');
     fs.writeFileSync(host, formatCard(8 << 20, { fat: 16 }));
@@ -84,19 +95,17 @@ async function run(viewport, label) {
     fatimg(host, 'put', f, 'HOST.TXT');
     await page.setInputFiles('#cardfile', host);
     await waitFor(/SD card replaced by host\.img/);
+    await page.click('#tetris');
+    await waitFor(/TETRIS\.ASM added to SD card/);
     await page.locator('#term').click();
     await type('sdls\rsdget host.txt\rcat host.txt\r');
+    await waitFor(/tetris\.asm +9292/);
     await waitFor(/cat host\.txt\s+made on the host\s+dos51\$\s*$/m);
   }
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1);
   if (overflow) errors.push(`${label}: page overflows horizontally`);
   const t = await screen();
-  if (shot && label === 'desktop') {
-    await page.keyboard.type('clear\r', { delay: 20 });
-    await page.keyboard.type('asm -r primes.asm\r', { delay: 20 });
-    await waitFor(/primes found/);
-    await page.screenshot({ path: shot });
-  }
+
   await page.close();
   return t;
 }

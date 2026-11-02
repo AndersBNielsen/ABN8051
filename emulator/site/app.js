@@ -2,6 +2,7 @@
 import { Board } from './emu/board.js';
 import { SDCard } from './emu/sdcard.js';
 import { formatCard } from './emu/fatfmt.js';
+import { putFat16File } from './emu/fatfile.js';
 
 const STATE_KEY = 'dos51.ram.v1';
 const $ = (id) => document.getElementById(id);
@@ -24,6 +25,10 @@ const rom = await fetch('dos51.ihx').then((r) => {
   return r.text();
 });
 
+const tetrisSource = new Uint8Array(await fetch('tetris.asm').then((r) => {
+  if (!r.ok) throw new Error(`Tetris source fetch failed: ${r.status}`);
+  return r.arrayBuffer();
+}));
 const board = new Board({ rom, rxPacing: 'flow' });
 let restored = false;
 try {
@@ -106,7 +111,9 @@ async function loadCard() {
       }
     } catch { /* unreadable: start with a blank card */ }
   }
-  insertCard(formatCard(CARD_MB << 20));
+  const image = formatCard(CARD_MB << 20);
+  putFat16File(image, 'TETRIS.ASM', tetrisSource);
+  insertCard(image);
   return false;
 }
 const cardRestored = await loadCard();
@@ -172,6 +179,16 @@ $('file').onchange = async () => {
   if (/[^\x09\x0a\x20-\x7e]/.test(text)) { alert('Only plain ASCII text files can be uploaded.'); return; }
   send(`\x03\rpaste ${name}\r`);
   send(text.replace(/\n/g, '\r') + (text.endsWith('\n') || !text ? '' : '\r') + '\x04');
+  term.focus();
+};
+
+// Add the game to an existing FAT16 card without touching any other file.
+$('tetris').onclick = () => {
+  try {
+    const added = putFat16File(card.image, 'TETRIS.ASM', tetrisSource, card.onWrite);
+    term.write(added ? '\r\n[TETRIS.ASM added to SD card; type sdget tetris.asm]\r\n' :
+      '\r\n[TETRIS.ASM is already on the SD card; not overwritten]\r\n');
+  } catch (e) { alert(`${e.message}. Download tetris.asm and use Upload file… to copy it to the RAM disk.`); }
   term.focus();
 };
 

@@ -5,8 +5,9 @@ cd "$(dirname "$0")/.."
 rm -rf dist
 mkdir -p dist/emu dist/vendor
 cp site/index.html site/app.js site/style.css site/.htaccess dist/
+cp games/tetris.asm dist/tetris.asm
 cp site/vendor/* dist/vendor/
-cp emu/board.js emu/cpu8051.js emu/ihex.js emu/sdcard.js emu/fatfmt.js dist/emu/
+cp emu/board.js emu/cpu8051.js emu/ihex.js emu/sdcard.js emu/fatfmt.js emu/fatfile.js dist/emu/
 cp firmware/build/dos51.ihx dist/
 echo "built dist/ from $(git rev-parse --short HEAD)$(git diff --quiet || echo '+dirty')"
 

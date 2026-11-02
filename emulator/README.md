@@ -62,6 +62,19 @@ Directives include `ORG`, `DB`/`DW` (and `DEFB`/`DEFW`), `DS`, `EQU`, `SET` or `
 
 The ROM installs `hello.asm`, `blink.asm`, `timer.asm`, `button.asm`, `upper.asm`, `primes.asm`, `files.asm` and `readme.txt` when it first formats RAM. Try `asm -r hello.asm`; inspect source with `cat hello.asm`. All seven assembly examples are assembled and executed in the end-to-end tests, including serial output, GPIO/interrupts and file I/O. `blink` and `button` drive four LEDs on P1.0–P1.3 and leave P1.4–P1.7 (the SD card) alone.
 
+### Tetris (separate SD-card game)
+
+[`games/tetris.asm`](games/tetris.asm) is a 10×20 VT100/ANSI Tetris game for the self-hosted assembler. It is **not stored in the 32 KiB ROM**. New browser visitors get `tetris.asm` on their virtual FAT16 SD card; returning visitors can use **Add Tetris to SD**, which leaves existing card files untouched and will not overwrite an existing `tetris.asm`. On DOS/51, run:
+
+```text
+sdget tetris.asm
+asm -r tetris.asm
+```
+
+The source also works on a real DOS/51 board: copy it to a FAT16 card, or upload it to the RAM disk with `rx tetris.asm`/the browser’s **Upload file…** control. The RAM disk has room for the 9.1 KiB source and 1369-byte assembled program on a freshly formatted machine. `sdput tetris.asm` saves an uploaded copy to the SD card. The browser page also offers a direct source download.
+
+Controls: arrows or A/D for left/right, W/Up rotate, S/Down soft drop, Space hard drop, P pause, Q or Esc quit. H/J/K/L also work as movement alternatives. Pieces use coloured `[]` blocks; gravity accelerates with level, and score/lines/next piece are shown alongside the board.
+
 ## Program ABI and memory
 
 A user program starts at 8000h and can end with `RET` or `LJMP 7F00h` (`EXIT`). `run FILE.bin` copies the file to 8000h before starting it. The ROM forwards hardware interrupt vectors to 8003h (INT0), 800Bh (Timer 0), 8013h (INT1), and 801Bh (Timer 1); put jumps there if the program uses them. Keep Timer 1 configured for the serial baud clock and leave serial interrupts enabled for console I/O. User internal RAM is 08h–2Fh; DOS keeps 30h–3Ah and uses the stack above 3Ah. Programs may use upper XDATA beyond their code, but should avoid overwriting live instructions.
