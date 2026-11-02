@@ -1,22 +1,54 @@
-:root { color-scheme: dark; }
-html, body { margin: 0; background: #16181a; color: #c8cdc8; font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
-main { max-width: 900px; margin: 0 auto; padding: 16px 12px 32px; }
-h1 { font-size: 20px; margin: 4px 0 2px; color: #e8ece8; }
-.sub { color: #8b928b; margin: 0 0 12px; }
-.bar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 8px 0; }
-button { font: inherit; background: #2a2e31; color: #dfe4df; border: 1px solid #3c4246; border-radius: 6px; padding: 5px 10px; cursor: pointer; }
-button:hover { background: #343a3e; }
-button:active { background: #3f474c; }
-.keys button { font-family: Menlo, monospace; font-size: 13px; padding: 5px 8px; }
-#status { margin-left: auto; color: #8b928b; font: 12px Menlo, monospace; }
-#wrap { background: #0b0f0b; border: 1px solid #2c312c; border-radius: 8px; padding: 10px; overflow-x: auto; }
-#term { width: max-content; }
-details { margin-top: 14px; color: #a9b0a9; }
-summary { cursor: pointer; color: #dfe4df; }
-code { font-family: Menlo, monospace; color: #9fe89f; }
-table { border-collapse: collapse; margin: 6px 0; }
-td { padding: 2px 12px 2px 0; vertical-align: top; }
+/* Shares the look of the ABN6502 r2 emulator page. */
+:root { color-scheme: dark; --bg: #0d1214; --panel: #182124; --line: #2b3e40; --fg: #e5ece8; --muted: #9caeaa; --green: #8bfa83; --accent: #9ed8b3; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; background: var(--bg); color: var(--fg); }
+body { max-width: 1500px; margin: auto; padding: clamp(16px, 3vw, 48px); }
+button, input { font: inherit; }
+a { color: var(--accent); }
 
-.hub-link { margin: 0 0 10px; }
-.hub-link a { color: #9fe89f; text-decoration: none; }
-.hub-link a:hover { text-decoration: underline; }
+.top { display: flex; align-items: end; justify-content: space-between; gap: 24px; padding: 12px 0 32px; border-bottom: 1px solid var(--line); }
+.eyebrow { font-size: .73rem; letter-spacing: .17em; color: var(--accent); font-weight: 700; }
+h1 { font-size: clamp(2.1rem, 5vw, 4.4rem); letter-spacing: -.065em; margin: 4px 0 0; line-height: 1; }
+h1 b { font-weight: 300; color: var(--green); }
+.top p { color: var(--muted); margin: 12px 0 0; }
+.shop { border: 1px solid var(--line); border-radius: 9px; padding: 12px 16px; white-space: nowrap; text-decoration: none; color: var(--fg); }
+
+main { display: grid; grid-template-columns: minmax(0, 1fr) minmax(270px, 340px); gap: 24px; margin-top: 24px; }
+.console { align-self: start; min-width: 0; background: #20292a; border: 1px solid #384844; border-radius: 16px; padding: clamp(12px, 2vw, 24px); box-shadow: 0 18px 60px #0008; }
+.console-head, .console-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; color: #c4d5cb; font-size: .8rem; letter-spacing: .07em; }
+.console-head { padding: 0 5px 15px; }
+#status { font: 12px Menlo, monospace; letter-spacing: 0; color: var(--muted); text-align: right; }
+.power-dot { display: inline-block; width: 8px; height: 8px; background: var(--green); border-radius: 50%; box-shadow: 0 0 10px var(--green); margin-right: 8px; }
+.bezel { background: #020805; padding: clamp(10px, 2vw, 24px); border: 5px solid #121b1c; border-radius: 28px; box-shadow: inset 0 0 25px #000, 0 2px 12px #0008; overflow-x: auto; }
+#term { width: max-content; margin: 0 auto; }
+.console-foot { padding: 15px 5px 0; letter-spacing: 0; }
+.console-foot span { color: var(--muted); }
+kbd { font: .9em Menlo, monospace; border: 1px solid var(--line); border-radius: 3px; padding: 0 3px; color: var(--fg); }
+
+.keys { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.keys button { font: 13px Menlo, monospace; min-width: 40px; padding: 7px 8px; }
+
+.sidebar { display: grid; align-content: start; gap: 18px; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 19px; }
+.panel h2 { margin: 0 0 10px; font-size: 1rem; }
+.panel p, .panel small { color: var(--muted); line-height: 1.5; }
+.panel p { font-size: .88rem; margin: 0 0 14px; }
+.panel small { display: block; font-size: .76rem; margin-top: 10px; }
+.stats { display: grid; grid-template-columns: 1fr auto; gap: 8px 12px; font-size: .82rem; margin: 14px 0 18px; }
+.stats span { color: var(--muted); }
+.stats strong { font-weight: 600; text-align: right; }
+.actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+.actions button { font-size: .78rem; }
+button { border: 1px solid #456b54; border-radius: 7px; background: #244630; color: #effff0; padding: 9px 12px; cursor: pointer; }
+button:hover { background: #326343; }
+button:focus-visible, .shop:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+
+table { border-collapse: collapse; font-size: .8rem; color: var(--muted); }
+td { padding: 3px 10px 3px 0; vertical-align: top; }
+td:last-child { padding-right: 0; }
+code { font-family: Menlo, monospace; color: var(--green); }
+
+footer { border-top: 1px solid var(--line); margin-top: 28px; padding: 20px 0; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; color: var(--muted); font-size: .78rem; }
+
+@media (max-width: 1100px) { main { grid-template-columns: 1fr; } .sidebar { grid-template-columns: repeat(2, minmax(0, 1fr)); } .sidebar .panel:last-child { grid-column: 1 / -1; } }
+@media (max-width: 600px) { body { padding: 12px; } .top { align-items: start; flex-direction: column; gap: 15px; padding-bottom: 20px; } .sidebar { grid-template-columns: 1fr; } .console { padding: 10px; } .bezel { border-width: 3px; border-radius: 14px; padding: 8px; } .console-foot { flex-wrap: wrap; } }

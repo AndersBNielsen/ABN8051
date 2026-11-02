@@ -15,7 +15,7 @@ const term = new Terminal({
   cursorBlink: true,
   convertEol: false,
   scrollback: 2000,
-  theme: { background: '#0b0f0b', foreground: '#7cfc7c', cursor: '#7cfc7c', selectionBackground: '#2f5f2f' },
+  theme: { background: '#020805', foreground: '#8bfa83', cursor: '#8bfa83', selectionBackground: '#2f5f2f' },
 });
 term.open($('term'));
 

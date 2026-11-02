@@ -3,63 +3,88 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101617">
+<title>DOS/51 · 80C31 Browser Emulator</title>
+<meta name="description" content="Run the real DOS/51 ROM for a ROM-less 80C31 board in your browser: 19200-baud serial shell, RAM disk, nano-like editor, assembler and virtual SD card. No installation.">
 <link rel="canonical" href="https://www.imania.dk/dos51-865e9723ece6/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="DOS/51 · 80C31 serial DOS browser emulator">
+<meta property="og:description" content="The real DOS/51 ROM on an emulated 80C31: shell, editor, assembler and SD card. Free to run in your browser.">
+<meta property="og:url" content="https://www.imania.dk/dos51-865e9723ece6/">
+<meta property="og:image" content="https://www.imania.dk/retro-emulators/assets/dos51-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="referrer" content="no-referrer">
-<title>DOS/51 – 80C31 emulator</title>
 <link rel="stylesheet" href="vendor/xterm.css">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<header class="top">
+  <div>
+    <span class="eyebrow">ANDERS NIELSEN'S 80C31 SINGLE BOARD COMPUTER</span>
+    <h1>DOS/51 <b>1.0</b></h1>
+    <p>Real ROM. Serial terminal. RAM disk, assembler and SD card. Entirely in your browser.</p>
+  </div>
+  <a class="shop" href="/retro-emulators/?language=en">All retro emulators ↗</a>
+</header>
 <main>
-  <p class="hub-link"><a href="/retro-emulators/">← Retro Emulators</a></p>
-  <h1>DOS/51</h1>
-  <p class="sub">A serial DOS for a ROM-less 80C31 board (11.0592 MHz, 32K ROM, 2×32K RAM), running the real ROM image in an 8051 emulator in your browser at real-time speed over a 19200 baud console.</p>
-
-  <div class="bar">
-    <button id="reset" title="Press the reset button. RAM (and the RAM disk) survives.">Reset</button>
-    <button id="power" title="Power-cycle the board. RAM is lost and the RAM disk is reformatted.">Power cycle</button>
-    <button id="upload" title="Copy a text file from your computer onto the RAM disk">Upload file…</button>
-    <input id="file" type="file" hidden>
-    <button id="carddl" title="Save the virtual SD card as a disk image (FAT16, readable on a PC)">Download card</button>
-    <button id="cardin" title="Replace the virtual SD card with a disk image from your computer">Insert card…</button>
-    <button id="cardnew" title="Replace the virtual SD card with a blank FAT16 card">Blank card</button>
-    <input id="cardfile" type="file" accept=".img,.bin,.ima,application/octet-stream" hidden>
-    <span id="status">starting…</span>
-  </div>
-
-  <div id="wrap"><div id="term"></div></div>
-
-  <div class="bar keys" aria-label="Extra keys">
-    <button data-k="\x1b">Esc</button>
-    <button data-k="\x03">^C</button>
-    <button data-k="\x04">^D</button>
-    <button data-k="\x0f">^O</button>
-    <button data-k="\x18">^X</button>
-    <button data-k="\x0b">^K</button>
-    <button data-k="\x15">^U</button>
-    <button data-k="\x17">^W</button>
-    <button data-k="\t">Tab</button>
-    <button data-k="\x1b[A">↑</button>
-    <button data-k="\x1b[B">↓</button>
-    <button data-k="\x1b[D">←</button>
-    <button data-k="\x1b[C">→</button>
-  </div>
-
-  <details>
-    <summary>Quick start</summary>
-    <table>
-      <tr><td><code>help</code></td><td>list commands</td></tr>
-      <tr><td><code>ls -l</code>, <code>cat hello.asm</code></td><td>look at the bundled examples</td></tr>
-      <tr><td><code>asm -r primes.asm</code></td><td>assemble into upper RAM at 8000h and run</td></tr>
-      <tr><td><code>nano hello.asm</code></td><td>full-screen editor (^O save, ^X exit)</td></tr>
-      <tr><td><code>df</code>, <code>free</code>, <code>mem 8000 40</code></td><td>RAM disk, memory and hex dump</td></tr>
-      <tr><td><code>sdput hello.asm</code>, <code>sdls</code></td><td>copy a file to the SD card, list the card</td></tr>
-      <tr><td><code>sdget NAME.EXT [file]</code>, <code>sdrm NAME.EXT</code></td><td>copy a file from the card, delete it</td></tr>
-    </table>
-    <p>The board has an SD card on P1.4–P1.7 (SPI). Here it is a 16 MiB FAT16 card image kept in your browser (IndexedDB): <b>Download card</b> saves it as a disk image you can open on a PC, <b>Insert card…</b> loads a FAT16/FAT32 image from your computer. Card files use 8.3 names in the root directory.</p>
-    <p>Files live in the 24 KiB RAM disk in lower RAM (XDATA 2000h–7FFFh); programs, the assembler output and the editor buffer use the upper 32 KiB, which is mapped into both XDATA and CODE. This page keeps both RAM chips in your browser's local storage, so files survive a reload; <b>Power cycle</b> clears them. Nothing you type is sent anywhere.</p>
-  </details>
+  <section class="console" aria-label="DOS/51 serial terminal">
+    <div class="console-head"><span><i class="power-dot"></i> SERIAL / 19200 BAUD 8N1</span><span id="status">starting…</span></div>
+    <div class="bezel" id="wrap"><div id="term"></div></div>
+    <div class="keys" aria-label="Extra keys">
+      <button type="button" data-k="\x1b">Esc</button>
+      <button type="button" data-k="\x03">^C</button>
+      <button type="button" data-k="\x04">^D</button>
+      <button type="button" data-k="\x0f">^O</button>
+      <button type="button" data-k="\x18">^X</button>
+      <button type="button" data-k="\x0b">^K</button>
+      <button type="button" data-k="\x15">^U</button>
+      <button type="button" data-k="\x17">^W</button>
+      <button type="button" data-k="\t">Tab</button>
+      <button type="button" data-k="\x1b[A" aria-label="Arrow up">↑</button>
+      <button type="button" data-k="\x1b[B" aria-label="Arrow down">↓</button>
+      <button type="button" data-k="\x1b[D" aria-label="Arrow left">←</button>
+      <button type="button" data-k="\x1b[C" aria-label="Arrow right">→</button>
+    </div>
+    <div class="console-foot"><span>Click the terminal and type. Try <kbd>help</kbd>, <kbd>ls -l</kbd> or <kbd>asm -r primes.asm</kbd>.</span></div>
+  </section>
+  <aside class="sidebar">
+    <section class="panel">
+      <h2>Machine</h2>
+      <div class="stats"><span>CPU</span><strong>80C31 · 11.0592 MHz</strong><span>ROM</span><strong>32 KiB DOS/51 firmware</strong><span>RAM</span><strong>2 × 32 KiB</strong><span>Console</span><strong>VT100 · 80 × 24</strong></div>
+      <div class="actions">
+        <button id="reset" type="button" title="Press the reset button. RAM (and the RAM disk) survives.">Reset</button>
+        <button id="power" type="button" title="Power-cycle the board. RAM is lost and the RAM disk is reformatted.">Power cycle</button>
+        <button id="upload" type="button" title="Copy a text file from your computer onto the RAM disk">Upload file…</button>
+      </div>
+      <input id="file" type="file" hidden>
+      <small>Both RAM chips are kept in this browser, so files survive a reload; Power cycle clears them. Nothing you type is uploaded.</small>
+    </section>
+    <section class="panel">
+      <h2>SD card</h2>
+      <p>The board has an SD card on P1.4–P1.7 (SPI). Here it is a 16 MiB FAT16 image stored in your browser. Card files use 8.3 names in the root directory.</p>
+      <div class="actions">
+        <button id="carddl" type="button" title="Save the virtual SD card as a disk image (FAT16, readable on a PC)">Download card</button>
+        <button id="cardin" type="button" title="Replace the virtual SD card with a disk image from your computer">Insert card…</button>
+        <button id="cardnew" type="button" title="Replace the virtual SD card with a blank FAT16 card">Blank card</button>
+      </div>
+      <input id="cardfile" type="file" accept=".img,.bin,.ima,application/octet-stream" hidden>
+      <small>Insert card… accepts FAT16/FAT32 images up to 256 MiB.</small>
+    </section>
+    <section class="panel">
+      <h2>Quick start</h2>
+      <table>
+        <tr><td><code>help</code></td><td>list commands</td></tr>
+        <tr><td><code>ls -l</code>, <code>cat hello.asm</code></td><td>bundled examples</td></tr>
+        <tr><td><code>asm -r primes.asm</code></td><td>assemble to 8000h and run</td></tr>
+        <tr><td><code>nano hello.asm</code></td><td>editor (^O save, ^X exit)</td></tr>
+        <tr><td><code>df</code>, <code>free</code>, <code>mem 8000 40</code></td><td>disk, memory, hex dump</td></tr>
+        <tr><td><code>sdput</code>, <code>sdls</code>, <code>sdget</code>, <code>sdrm</code></td><td>SD card files</td></tr>
+      </table>
+      <small>Files live in the 24 KiB RAM disk (XDATA 2000h–7FFFh). Programs, assembler output and the editor buffer use the upper 32 KiB, mapped into both XDATA and CODE.</small>
+    </section>
+  </aside>
 </main>
+<footer><span>DOS/51 browser emulator · Static HTML, CSS &amp; JavaScript</span><span><a href="/samlesaet-hobbyelektronik-og-ic-er-philips-p80c31sfpn-80c31-8051-microcontroller-dip40.htm?language=en">80C31 CPU</a> · <a href="https://github.com/AndersBNielsen/ABN8051">ABN8051 on GitHub</a> · <a href="https://github.com/AndersBNielsen/ABN8051/tree/main/emulator">Emulator &amp; firmware source</a></span></footer>
 <script src="vendor/xterm.js"></script>
 <script type="module" src="app.js"></script>
 </body>
