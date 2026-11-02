@@ -243,17 +243,14 @@ r_blk:  cjne    a, #EOT, 00010$         ; A = first byte of a block
         jc      r_nk
         cpl     a
         xrl     a, rblk
-        jnz     r_nak
-        mov     crcl, #0
-        mov     crch, #0
+        jnz     00032$
         mov     cnl, lenl
         mov     cnh, lenh
         mov     r0, ptl                 ; R1:R0 = write pointer
         mov     r1, pth
-00015$: lcall   g1s
-        jc      r_nak
-        lcall   csum
-        mov     dpl, r0
+00015$: lcall   g1s                     ; store only: at 57600 baud a byte
+        jc      00032$                  ; arrives every 160 cycles, too
+        mov     dpl, r0                 ; little time for a bitwise CRC
         mov     dph, r1
         movx    @dptr, a
         inc     dptr
@@ -262,12 +259,30 @@ r_blk:  cjne    a, #EOT, 00010$         ; A = first byte of a block
         lcall   cntdn
         jnz     00015$
         lcall   g1s                     ; check value
-        jc      r_nak
+        jc      00032$
         mov     r2, a
+        mov     r3, #0
+        mov     a, crcm
+        jz      00030$
+        lcall   g1s                     ; CRC: high byte first
+        jc      00032$
+        mov     r3, a
+        sjmp    00030$
+00032$: ljmp    r_nak
+00030$: mov     crcl, #0                ; sender now waits for our reply,
+        mov     crch, #0                ; so check the stored block
+        mov     cnl, lenl
+        mov     cnh, lenh
+        mov     dpl, ptl
+        mov     dph, pth
+00031$: movx    a, @dptr
+        lcall   csum
+        inc     dptr
+        lcall   cntdn
+        jnz     00031$
         mov     a, crcm
         jz      00016$
-        lcall   g1s                     ; CRC: high byte first
-        jc      r_nak
+        mov     a, r3
         xrl     a, crcl
         mov     r3, a
         mov     a, r2

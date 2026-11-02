@@ -261,7 +261,7 @@ static void cmd_stty(void)
     put_dec(term_rows);
     puts_c(" cols ");
     put_dec(term_cols);
-    puts_c(" 19200 8N1\n");
+    puts_c(" 57600 8N1\n");
 }
 
 static void cmd_ver(void)
@@ -291,7 +291,7 @@ void sys_restore(void)
     PSW = 0;
     TR0 = 0;
     TMOD = (TMOD & 0x0F) | 0x20;
-    TH1 = 0xFD;
+    TH1 = 0xFF;                      /* 57600 baud, as in main.c */
     PCON |= 0x80;
     SCON = (SCON & 0x03) | 0x50;
     TR1 = 1;

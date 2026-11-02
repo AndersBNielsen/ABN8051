@@ -1,6 +1,7 @@
 // DOS/51 ROM end to end: boot, shell commands, RAM disk.
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import { boot, cmd, PROMPT, SEC, tpa } from './dos-helpers.js';
 
 test('boot banner, RAM disk formatted with the examples, prompt', () => {
@@ -9,8 +10,8 @@ test('boot banner, RAM disk formatted with the examples, prompt', () => {
   assert.match(banner, /Formatting RAM disk\.\.\. done/);
   assert.match(banner, /RAM disk: 8 files, \d+ bytes free\.  TPA 8000h-FFFFh\.  Type 'help'\./);
   assert.ok(banner.endsWith(PROMPT));
-  // serial setup: mode 1, T1 auto-reload at 19200 baud
-  assert.equal(h.board.baud, 19200);
+  // serial setup: mode 1, T1 auto-reload at 57600 baud
+  assert.equal(h.board.baud, 57600);
   const ls = cmd(h, 'ls');
   for (const f of ['readme.txt', 'hello.asm', 'blink.asm', 'timer.asm', 'button.asm', 'upper.asm', 'primes.asm', 'files.asm']) {
     assert.ok(ls.includes(f), `${f} missing from ls`);
@@ -126,4 +127,15 @@ test('paste a text file, ^D ends', () => {
   h.send('line one\r\nline two\r\x04');
   assert.match(h.waitFor(PROMPT), /18 bytes saved/);
   assert.equal(cmd(h, 'cat p.txt'), 'line one\nline two\n');
+});
+
+test('paste keeps a long upload intact at 57600 baud (echo stops when the ring fills)', () => {
+  const src = fs.readFileSync(new URL('../games/dropblk.asm', import.meta.url), 'latin1').replace(/\r/g, '').slice(0, 7000);
+  const { h } = boot();
+  h.send('paste big.asm\r');
+  h.waitFor('^D on an empty line');
+  h.send(src.replace(/\n/g, '\r') + '\r\x04');
+  const tail = h.waitFor(PROMPT, { timeoutCycles: 60 * SEC });
+  assert.match(tail, /\[receiving, echo off\][\s\S]*7001 bytes saved/);
+  assert.ok(cmd(h, 'cat big.asm', { timeout: 60 }).startsWith(src + '\n'));
 });

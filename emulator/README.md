@@ -9,7 +9,7 @@ Requirements: Node.js 20+, Python 3, GNU Make, SDCC 4.x (`sdcc`, `sdas8051`).
 ```sh
 make -C firmware                 # firmware/build/dos51.ihx and dos51.bin (32,768 bytes)
 npm test                         # emulator, SD card model, firmware and end-to-end tests
-node bin/dos51.js                # VT100 serial console, 19200 baud
+node bin/dos51.js                # VT100 serial console, 57600 baud
 node bin/dos51.js --sd card.img  # ... with an SD card image (created blank if missing)
 ```
 
@@ -121,4 +121,4 @@ The SD calls work in any register bank, preserve R0–R7, B and DPTR (A and the 
 | XDATA 2000h–7FFFh | RAM disk (directory plus file data) |
 | XDATA 8000h–FFFFh | The same upper RAM chip as CODE 8000h–FFFFh |
 
-See [`docs/HARDWARE.md`](docs/HARDWARE.md) for decoding and GPIO details. RAM0 and RAM1 are 62256-compatible SRAMs. The board uses an 80C31 with EA low, a 74HC573 address latch for P0/ALE, and address decoding that selects the 27C256/28C256 for `/PSEN` at A15=0, RAM0 for `/RD` or `/WR` at A15=0, and RAM1 for `/PSEN`, `/RD` or `/WR` at A15=1. Burn `firmware/build/dos51.bin` directly into a 27C256 or compatible 28C256; it is exactly 32768 bytes. Connect RxD=P3.0 and TxD=P3.1 crossed to a 19200 8N1 serial adapter with common ground. Use a TTL-level adapter at the MCU pins; an RS-232 port requires a MAX232-level converter. P1.0–P1.3 are available for GPIO and P1.4–P1.7 carry the SD card (/CS, SCK, MOSI, MISO); P0/P2 are consumed by the external bus.
+See [`docs/HARDWARE.md`](docs/HARDWARE.md) for decoding and GPIO details. RAM0 and RAM1 are 62256-compatible SRAMs. The board uses an 80C31 with EA low, a 74HC573 address latch for P0/ALE, and address decoding that selects the 27C256/28C256 for `/PSEN` at A15=0, RAM0 for `/RD` or `/WR` at A15=0, and RAM1 for `/PSEN`, `/RD` or `/WR` at A15=1. Burn `firmware/build/dos51.bin` directly into a 27C256 or compatible 28C256; it is exactly 32768 bytes. Connect RxD=P3.0 and TxD=P3.1 crossed to a 57600 8N1 serial adapter with common ground. Use a TTL-level adapter at the MCU pins; an RS-232 port requires a MAX232-level converter. P1.0–P1.3 are available for GPIO and P1.4–P1.7 carry the SD card (/CS, SCK, MOSI, MISO); P0/P2 are consumed by the external bus.

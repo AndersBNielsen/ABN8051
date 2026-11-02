@@ -37,7 +37,7 @@ Reset does not clear either RAM chip; only a power cycle does. In the emulator, 
 ## Serial
 
 * The on-chip UART runs in mode 1 (8N1). Timer 1 in mode 2 is the baud generator.
-* DOS/51 uses TH1 = 0xFD with SMOD = 1, giving **19200 baud**. Clearing SMOD gives 9600 baud.
+* DOS/51 uses TH1 = 0xFF with SMOD = 1, giving **57600 baud**, the fastest Timer 1 rate at 11.0592 MHz (38400 is not reachable with this crystal). Clearing SMOD gives 28800 baud; TH1 = 0xFD gives the classic 19200.
 * TxD is P3.1 and RxD is P3.0. A MAX232 or a USB-TTL adapter connects them to the host.
 
 ## SD card (SPI on P1.4–P1.7)

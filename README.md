@@ -1,6 +1,6 @@
 # ABN8051 / DOS/51
 
-An 80C31 computer design and DOS/51 software project. The proposed memory map uses a 32 KiB ROM and two 32 KiB RAM chips; upper RAM is mapped into both CODE and XDATA so assembled programs can execute there. The 11.0592 MHz clock supports a 19,200-baud serial console. The board has not yet been bench-verified.
+An 80C31 computer design and DOS/51 software project. The proposed memory map uses a 32 KiB ROM and two 32 KiB RAM chips; upper RAM is mapped into both CODE and XDATA so assembled programs can execute there. The 11.0592 MHz clock supports a 57,600-baud serial console. The board has not yet been bench-verified.
 
 The complete DOS, SDCC firmware source, seven assembly examples, command-line 8051 emulator, browser interface and tests live in [emulator/](emulator/README.md). The hardware wiring and address decoding are documented in [emulator/docs/HARDWARE.md](emulator/docs/HARDWARE.md). [Try DOS/51 in your browser](https://www.imania.dk/dos51/).
 

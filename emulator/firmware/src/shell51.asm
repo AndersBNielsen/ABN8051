@@ -28,6 +28,8 @@
         ar6     = 6
         ar7     = 7
 
+        PASTEBUF = 0x1E00       ; ASMWORK page, idle during paste
+
         .area   PSEG    (PAG,XDATA)
 _dump_PARM_2:   .ds 2
 _dump_PARM_3:   .ds 1
@@ -52,6 +54,7 @@ s_pasteu: .asciz "usage: paste FILE"
 s_prompt: .asciz "dos51$ "
 s_bs:   .db     8, 0x20, 8, 0
 s_paste: .asciz "Paste/type text, end with ^D on an empty line\n"
+s_pquiet: .asciz "\n[receiving, echo off]\n"
 s_ctlc: .asciz  "^C\n"
 s_saved: .asciz " bytes saved\n"
 
@@ -776,6 +779,10 @@ _cmd_paste:
         movx    @r0, a
         inc     r0
         movx    @r0, a                  ; s_ls: last character
+        mov     r0, #s_end              ; bytes buffered at PASTEBUF
+        movx    @r0, a
+        mov     r0, #s_ls+1             ; 1 = echo off (input backlog)
+        movx    @r0, a
         mov     dptr, #s_paste
         lcall   puts_cd
 00003$: lcall   getch_a
@@ -801,19 +808,37 @@ _cmd_paste:
         sjmp    00003$
 00011$: cjne    a, #127, 00012$
         sjmp    00003$
-00012$: push    acc
-        mov     r0, #_f_putc_PARM_2
+00012$: mov     r0, #s_end              ; buffer it: a write per byte is
+        xch     a, r2                   ; too slow at 57600 baud
+        movx    a, @r0
+        mov     dpl, a
+        inc     a
         movx    @r0, a
-        lcall   dplh
-        lcall   _f_putc
-        pop     acc
-        xch     a, dpl
-        jz      00013$
+        mov     dph, #PASTEBUF >> 8
+        xch     a, r2
+        movx    @dptr, a
+        mov     r3, a
+        mov     r0, #s_ls+1             ; echo costs a CR LF per CR: on a
+        movx    a, @r0                  ; long upload the ring would fill,
+        jnz     00017$                  ; so stop echoing once it is half full
+        mov     a, _rx_head
+        clr     c
+        subb    a, _rx_tail
+        jnb     acc.7, 00018$
+        mov     a, #1
+        movx    @r0, a
+        mov     dptr, #s_pquiet
+        lcall   puts_cd
+        sjmp    00017$
+00018$: mov     a, r3
+        lcall   putc_a
+00017$: cjne    r2, #255, 00013$        ; flush a full page only
+        lcall   pflush
+        jnc     00013$
         mov     dptr, #_fs_err_full
         lcall   puts_cd
-        sjmp    00010$
-00013$: xch     a, dpl
-        lcall   putc_a
+        sjmp    00016$
+00013$:
         mov     r0, #s_ln
         movx    a, @r0
         add     a, #1
@@ -823,7 +848,8 @@ _cmd_paste:
         addc    a, #0
         movx    @r0, a
         sjmp    00003$
-00010$: lcall   dplh
+00010$: lcall   pflush
+00016$: lcall   dplh
         lcall   _f_close
         lcall   crlf_r
         mov     r0, #s_ln
@@ -835,6 +861,31 @@ _cmd_paste:
         lcall   _put_dec
         mov     dptr, #s_saved
         ljmp    puts_cd
+
+; pflush: append the s_end bytes at PASTEBUF to file s_h; C = 1 if full
+pflush: mov     r0, #s_end
+        movx    a, @r0
+        jz      00002$
+        mov     r0, #_f_write_PARM_3
+        movx    @r0, a
+        inc     r0
+        clr     a
+        movx    @r0, a
+        mov     r0, #s_end
+        movx    @r0, a
+        mov     r0, #_f_write_PARM_2
+        movx    @r0, a                  ; PASTEBUF low byte = 0
+        inc     r0
+        mov     a, #PASTEBUF >> 8
+        movx    @r0, a
+        lcall   dplh
+        lcall   _f_write
+        mov     a, dpl
+        jz      00002$
+        setb    c
+        ret
+00002$: clr     c
+        ret
 
 ;---------------------------------------------------------------- dump
 ; void dump(u16 addr, u16 len, u8 code): hex + ASCII, 16 bytes per line

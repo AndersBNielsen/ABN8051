@@ -9,8 +9,8 @@ void ser_init(void)
     rx_head = rx_tail = 0;
     tx_ready = 1;
     TMOD = (TMOD & 0x0F) | 0x20;     /* T1 mode 2, 8-bit auto reload */
-    TH1 = 0xFD;                      /* 19200 baud with SMOD=1 @ 11.0592 MHz */
-    TL1 = 0xFD;
+    TH1 = 0xFF;                      /* 57600 baud with SMOD=1 @ 11.0592 MHz */
+    TL1 = 0xFF;
     PCON |= 0x80;                    /* SMOD */
     SCON = 0x50;                     /* mode 1, REN */
     TR1 = 1;
