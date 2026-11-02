@@ -1,4 +1,4 @@
-// Tetris lives on the SD card, not in the space-constrained 32 KiB ROM.
+// DropBlocks lives on the SD card, not in the space-constrained 32 KiB ROM.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -9,26 +9,26 @@ import { SDCard } from '../emu/sdcard.js';
 import { ROM_PATH, PROMPT, SEC, cmd } from './dos-helpers.js';
 import { Screen } from './vt-screen.js';
 
-const source = new Uint8Array(fs.readFileSync(new URL('../games/tetris.asm', import.meta.url)));
+const source = new Uint8Array(fs.readFileSync(new URL('../games/dropblk.asm', import.meta.url)));
 function game() {
   const image = formatCard(16 << 20);
-  assert.equal(putFat16File(image, 'TETRIS.ASM', source), true);
-  assert.equal(putFat16File(image, 'TETRIS.ASM', source), false);
+  assert.equal(putFat16File(image, 'DROPBLK.ASM', source), true);
+  assert.equal(putFat16File(image, 'DROPBLK.ASM', source), false);
   const h = createHarness({ romPath: ROM_PATH, seed: 1 });
   new SDCard({ image }).attach(h.board);
   h.waitFor(PROMPT, { timeoutCycles: 5 * SEC });
-  assert.match(cmd(h, 'sdls'), /tetris\.asm +9292/);
-  assert.equal(cmd(h, 'sdget tetris.asm', { timeout: 60 }), '');
-  assert.equal(cmd(h, 'cat tetris.asm'), Buffer.from(source).toString('latin1'));
-  const compiled = cmd(h, 'asm tetris.asm', { timeout: 90 });
+  assert.match(cmd(h, 'sdls'), /dropblk\.asm +9302/);
+  assert.equal(cmd(h, 'sdget dropblk.asm', { timeout: 60 }), '');
+  assert.equal(cmd(h, 'cat dropblk.asm'), Buffer.from(source).toString('latin1'));
+  const compiled = cmd(h, 'asm dropblk.asm', { timeout: 90 });
   assert.match(compiled, /545 lines, 108 symbols, 0 error\(s\)/);
-  assert.match(compiled, /wrote tetris\.bin \(1369 bytes, load at 8000h\)/);
+  assert.match(compiled, /wrote dropblk\.bin \(1373 bytes, load at 8000h\)/);
   h.clearOutput();
-  h.send('run tetris.bin\r');
+  h.send('run dropblk.bin\r');
   h.waitFor('Press a key', { timeoutCycles: 12 * SEC });
   const screen = new Screen();
   screen.write(h.output);
-  assert.match(screen.dump(), /DOS\/51 TETRIS/);
+  assert.match(screen.dump(), /DOS\/51 DROPBLOCKS/);
   assert.match(screen.dump(), /Next/);
   assert.equal(screen.cursor, false);
   h.send('g');
@@ -36,7 +36,7 @@ function game() {
   return { h, screen };
 }
 
-test('Tetris on SD card: assemble, move, rotate, drop, pause and quit', () => {
+test('DropBlocks on SD card: assemble, move, rotate, drop, pause and quit', () => {
   const { h, screen } = game();
   const ram = h.board.cpu.iram;
   const x = ram[0x18], y = ram[0x19], rot = ram[0x1a];
@@ -65,7 +65,7 @@ test('Tetris on SD card: assemble, move, rotate, drop, pause and quit', () => {
   assert.match(cmd(h, 'ver'), /DOS\/51/);
 });
 
-test('Tetris clears a completed row and scores it', () => {
+test('DropBlocks clears a completed row and scores it', () => {
   const { h } = game();
   const ram = h.board.cpu.iram, board = h.board.ram1;
   const ys = Array.from(ram.subarray(0x08, 0x0c));
@@ -80,7 +80,7 @@ test('Tetris clears a completed row and scores it', () => {
   h.send('q'); h.waitFor(PROMPT, { timeoutCycles: 5 * SEC });
 });
 
-test('Tetris game over waits for a key, then returns to DOS', () => {
+test('DropBlocks game over waits for a key, then returns to DOS', () => {
   const { h } = game();
   // Occupy only spawn columns, not a complete row. The current piece can
   // still hard-drop; the next one must collide at the top.

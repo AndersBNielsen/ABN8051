@@ -64,20 +64,20 @@
       <h2>SD card</h2>
       <p>The board has an SD card on P1.4–P1.7 (SPI). Here it is a 16 MiB FAT16 image stored in your browser. Card files use 8.3 names in the root directory.</p>
       <div class="actions">
-        <button id="tetris" type="button" title="Add Tetris to a FAT16 SD card without replacing existing files">Add Tetris to SD</button>
+        <button id="dropblocks" type="button" title="Add DropBlocks to a FAT16 SD card without replacing existing files">Add DropBlocks</button>
         <button id="carddl" type="button" title="Save the virtual SD card as a disk image (FAT16, readable on a PC)">Download card</button>
         <button id="cardin" type="button" title="Replace the virtual SD card with a disk image from your computer">Insert card…</button>
         <button id="cardnew" type="button" title="Replace the virtual SD card with a blank FAT16 card">Blank card</button>
       </div>
       <input id="cardfile" type="file" accept=".img,.bin,.ima,application/octet-stream" hidden>
-      <small>Your first card includes <code>tetris.asm</code>. Existing cards are unchanged until you click Add Tetris to SD (FAT16). <a href="tetris.asm" download>Download source</a> for other cards or a real board. Insert card… accepts FAT16/FAT32 images up to 256 MiB.</small>
+      <small>Your first card includes <code>dropblk.asm</code>. Existing cards are unchanged until you click Add DropBlocks (FAT16). <a href="dropblk.asm" download>Download source</a> for other cards or a real board. Insert card… accepts FAT16/FAT32 images up to 256 MiB.</small>
     </section>
     <section class="panel">
       <h2>Quick start</h2>
       <table>
         <tr><td><code>help</code></td><td>list commands</td></tr>
         <tr><td><code>ls -l</code>, <code>cat hello.asm</code></td><td>bundled examples</td></tr>
-        <tr><td><code>sdget tetris.asm</code><br><code>asm -r tetris.asm</code></td><td>play Tetris (arrows or WASD, Space drop, P pause, Q quit)</td></tr>
+        <tr><td><code>sdget dropblk.asm</code><br><code>asm -r dropblk.asm</code></td><td>play DropBlocks (arrows or WASD, Space drop, P pause, Q quit)</td></tr>
         <tr><td><code>asm -r primes.asm</code></td><td>assemble to 8000h and run</td></tr>
         <tr><td><code>nano hello.asm</code></td><td>editor (^O save, ^X exit)</td></tr>
         <tr><td><code>df</code>, <code>free</code>, <code>mem 8000 40</code></td><td>disk, memory, hex dump</td></tr>

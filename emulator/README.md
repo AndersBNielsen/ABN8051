@@ -62,16 +62,16 @@ Directives include `ORG`, `DB`/`DW` (and `DEFB`/`DEFW`), `DS`, `EQU`, `SET` or `
 
 The ROM installs `hello.asm`, `blink.asm`, `timer.asm`, `button.asm`, `upper.asm`, `primes.asm`, `files.asm` and `readme.txt` when it first formats RAM. Try `asm -r hello.asm`; inspect source with `cat hello.asm`. All seven assembly examples are assembled and executed in the end-to-end tests, including serial output, GPIO/interrupts and file I/O. `blink` and `button` drive four LEDs on P1.0–P1.3 and leave P1.4–P1.7 (the SD card) alone.
 
-### Tetris (separate SD-card game)
+### DropBlocks (separate SD-card game)
 
-[`games/tetris.asm`](games/tetris.asm) is a 10×20 VT100/ANSI Tetris game for the self-hosted assembler. It is **not stored in the 32 KiB ROM**. New browser visitors get `tetris.asm` on their virtual FAT16 SD card; returning visitors can use **Add Tetris to SD**, which leaves existing card files untouched and will not overwrite an existing `tetris.asm`. On DOS/51, run:
+[`games/dropblk.asm`](games/dropblk.asm) is a 10×20 VT100/ANSI DropBlocks game for the self-hosted assembler. It is **not stored in the 32 KiB ROM**. New browser visitors get `dropblk.asm` on their virtual FAT16 SD card; returning visitors can use **Add DropBlocks to SD**, which leaves existing card files untouched and will not overwrite an existing `dropblk.asm`. On DOS/51, run:
 
 ```text
-sdget tetris.asm
-asm -r tetris.asm
+sdget dropblk.asm
+asm -r dropblk.asm
 ```
 
-The source also works on a real DOS/51 board: copy it to a FAT16 card, or upload it to the RAM disk with `rx tetris.asm`/the browser’s **Upload file…** control. The RAM disk has room for the 9.1 KiB source and 1369-byte assembled program on a freshly formatted machine. `sdput tetris.asm` saves an uploaded copy to the SD card. The browser page also offers a direct source download.
+The source also works on a real DOS/51 board: copy it to a FAT16 card, or upload it to the RAM disk with `rx dropblk.asm`/the browser’s **Upload file…** control. The RAM disk has room for the 9.1 KiB source and 1373-byte assembled program on a freshly formatted machine. `sdput dropblk.asm` saves an uploaded copy to the SD card. The browser page also offers a direct source download.
 
 Controls: arrows or A/D for left/right, W/Up rotate, S/Down soft drop, Space hard drop, P pause, Q or Esc quit. H/J/K/L also work as movement alternatives. Pieces use coloured `[]` blocks; gravity accelerates with level, and score/lines/next piece are shown alongside the board.
 

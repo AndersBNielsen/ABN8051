@@ -25,8 +25,8 @@ const rom = await fetch('dos51.ihx').then((r) => {
   return r.text();
 });
 
-const tetrisSource = new Uint8Array(await fetch('tetris.asm').then((r) => {
-  if (!r.ok) throw new Error(`Tetris source fetch failed: ${r.status}`);
+const dropBlocksSource = new Uint8Array(await fetch('dropblk.asm').then((r) => {
+  if (!r.ok) throw new Error(`DropBlocks source fetch failed: ${r.status}`);
   return r.arrayBuffer();
 }));
 const board = new Board({ rom, rxPacing: 'flow' });
@@ -112,7 +112,7 @@ async function loadCard() {
     } catch { /* unreadable: start with a blank card */ }
   }
   const image = formatCard(CARD_MB << 20);
-  putFat16File(image, 'TETRIS.ASM', tetrisSource);
+  putFat16File(image, 'DROPBLK.ASM', dropBlocksSource);
   insertCard(image);
   return false;
 }
@@ -183,12 +183,12 @@ $('file').onchange = async () => {
 };
 
 // Add the game to an existing FAT16 card without touching any other file.
-$('tetris').onclick = () => {
+$('dropblocks').onclick = () => {
   try {
-    const added = putFat16File(card.image, 'TETRIS.ASM', tetrisSource, card.onWrite);
-    term.write(added ? '\r\n[TETRIS.ASM added to SD card; type sdget tetris.asm]\r\n' :
-      '\r\n[TETRIS.ASM is already on the SD card; not overwritten]\r\n');
-  } catch (e) { alert(`${e.message}. Download tetris.asm and use Upload file… to copy it to the RAM disk.`); }
+    const added = putFat16File(card.image, 'DROPBLK.ASM', dropBlocksSource, card.onWrite);
+    term.write(added ? '\r\n[DROPBLK.ASM added to SD card; type sdget dropblk.asm]\r\n' :
+      '\r\n[DROPBLK.ASM is already on the SD card; not overwritten]\r\n');
+  } catch (e) { alert(`${e.message}. Download dropblk.asm and use Upload file… to copy it to the RAM disk.`); }
   term.focus();
 };
 

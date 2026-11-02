@@ -77,9 +77,9 @@ async function run(viewport, label) {
     await type('sdget sd.txt\rcat sd.txt\r');
     await waitFor(/cat sd\.txt\s+sd card test\s+dos51\$\s*$/m);
     // The separate SD-card game must assemble and run in the real browser.
-    await type('sdget tetris.asm\r');
+    await type('sdget dropblk.asm\r');
     await waitFor(/dos51\$\s*$/m);
-    await type('asm -r tetris.asm\r');
+    await type('asm -r dropblk.asm\r');
     await waitFor(/Press a key/);
     await type('g');
     await waitFor(/\[\]/);
@@ -95,11 +95,11 @@ async function run(viewport, label) {
     fatimg(host, 'put', f, 'HOST.TXT');
     await page.setInputFiles('#cardfile', host);
     await waitFor(/SD card replaced by host\.img/);
-    await page.click('#tetris');
-    await waitFor(/TETRIS\.ASM added to SD card/);
+    await page.click('#dropblocks');
+    await waitFor(/DROPBLK\.ASM added to SD card/);
     await page.locator('#term').click();
     await type('sdls\rsdget host.txt\rcat host.txt\r');
-    await waitFor(/tetris\.asm +9292/);
+    await waitFor(/dropblk\.asm +9302/);
     await waitFor(/cat host\.txt\s+made on the host\s+dos51\$\s*$/m);
   }
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1);

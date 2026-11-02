@@ -1,4 +1,4 @@
-; tetris.asm - Tetris for a VT100 terminal: asm -r tetris.asm
+; dropblk.asm - DropBlocks for a VT100 terminal: asm -r dropblk.asm
 ; Arrows (or WASD / HJKL) move, Up rotates, Down drops one row,
 ; Space drops, P pauses, Q or Esc quits.
 ; The board is 16 bytes per row in XDATA: 0 empty, 1-7 a block's
@@ -67,7 +67,7 @@ scr:	MOV	A, R6
 	CJNE	R6, #22, scr
 	LCALL	PUTSI
 	DB	10, "<!====================!>"
-	DB	27, "[2;28HDOS/51 TETRIS", 27, "[4;28HNext"
+	DB	27, "[2;28HDOS/51 DROPBLOCKS", 27, "[4;28HNext"
 	DB	27, "[9;28HScore", 27, "[10;28HLines", 27, "[11;28HLevel"
 	DB	27, "[14;28HLeft/Right a d  move"
 	DB	27, "[15;28HUp         w    rotate"
