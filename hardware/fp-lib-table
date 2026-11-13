@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name "ABN8051")(type "KiCad")(uri "${KIPRJMOD}/ABN8051.pretty")(options "")(descr "Project-owned footprints"))
+)

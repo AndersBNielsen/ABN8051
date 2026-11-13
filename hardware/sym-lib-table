@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "ABN8051")(type "KiCad")(uri "${KIPRJMOD}/ABN8051.kicad_sym")(options "")(descr "Project-owned symbols"))
+)
