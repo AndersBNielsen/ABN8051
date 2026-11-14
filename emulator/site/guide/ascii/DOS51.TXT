@@ -1,0 +1,93 @@
++------------------------------------------------------------------------+
+|                  08 / DOS/51 lab and troubleshooting                   |
++------------------------------------------------------------------------+
+
+WHAT THE EMULATOR ACTUALLY MODELS
+Classic 80C31 CPU, 128-byte internal RAM, Timer 0/1, baseline interrupt
+controller, UART and power-control states. The board adds an external
+32-KiB ROM and two 32-KiB SRAMs, then implements SD-card SPI in software.
+Timer 2, dual DPTR, enhanced address-recognition UART, IPH and analog
+electrical behavior are not modeled. Reading the Philips extensions
+chapter is not proof that those features run in this emulator.
+
+BOARD MAP
+CODE  0000-7FFF : DOS/51 ROM
+CODE  8000-FFFF : upper SRAM (executable)
+XDATA 0000-7FFF : lower SRAM (data)
+XDATA 8000-FFFF : same upper SRAM as CODE
+The RAM disk uses XDATA 2000-7FFF (24 KiB). Application/assembler/editor
+storage uses the upper SRAM. Firmware state also occupies
+internal/external RAM: those bytes are not all free application scratch
+space.
+
+SD CARD / FIELD MANUAL
+A first-use browser card includes this ASCII field manual and DropBlocks.
+Existing browser cards are not replaced. Use the Install field manual
+button to add missing manual files to a FAT16 card; existing files with
+the same names are left unchanged. FAT32 cards can be inserted for
+firmware access, but the browser-side installer is FAT16-only.
+
+    sdls
+    sdget guide51.txt
+    cat guide51.txt
+    rm guide51.txt
+    sdget mem51.txt
+    cat mem51.txt
+
+Remove an imported chapter from the RAM disk when done; the SD copy
+remains. The full manual is split into small files because the RAM disk is
+only 24 KiB and may already contain your work. If sdget reports
+insufficient space, save/delete unneeded RAM files first; do not blank the
+card to solve a RAM-disk capacity problem. Use the online edition for
+search and the complete opcode table. Download card saves the actual FAT16
+image with the text files in its root.
+
+BOARD GPIO
+P1.0-P1.3 are the example LED lines (active low). P1.4=/CS, P1.5=SCK,
+P1.6=MOSI, P1.7=MISO for software SPI. Leave the MISO latch high for
+input. Use bit instructions on LED bits; do not replace all of P1 with an
+arbitrary byte while the SD card is attached. P0/P2 serve the external
+memory bus; P3.0/1 serve the serial console; P3.6/7 serve external RAM
+strobes.
+
+The SPI protocol and FAT filesystem are firmware/board features, not CPU
+instructions or on-chip 80C31 peripherals. A real SD card needs a 3.3-V
+supply and suitable logic translation. The browser models digital
+transactions, not regulator current, wire capacitance, analogue signal
+edges or component damage.
+
+GETTING UNSTUCK
+- No console after a test: did you change Timer 1, SCON, PCON, SP or IE?
+Reset restarts the ROM while preserving SRAM. Power cycle clears RAM and
+RAM-disk files; the SD card has separate persistence.
+- A conditional branch behaves strangely: check A rather than an imaginary
+zero flag; check signed versus unsigned comparisons and whether an
+instruction changed CY.
+- Wrong RAM byte: distinguish #literal from direct address and MOV from
+MOVX/MOVC. Check the selected register bank.
+- A bit write hits the wrong peripheral: byte and bit addresses are
+different namespaces. Only selected SFR bytes are bit-addressable.
+- Table lookup reads nonsense: initialize A; MOVC adds it to DPTR or
+post-opcode PC. It does not increment DPTR afterwards.
+- RET jumps into nowhere: inspect unmatched PUSH/POP, stack overflow above
+7F, corrupted return addresses or an unintended jump into a subroutine.
+- A port will not go high: an output latch zero drives low; release it
+with one for input. P0 GPIO needs pull-ups. On the actual ROMless board
+many pins are already the memory bus.
+- Timer counts at the wrong rate: classic timer mode is oscillator/12;
+UART Timer 2 baud mode is a distinct Philips extension. A cycle table is
+not an oscillator-clock table.
+- New SD files are missing: an old saved card is intentionally preserved.
+Click Install field manual; then sdls. Do not erase a visitor's saved work
+just to seed a new example.
+
+NEXT EXPERIMENTS
+1. Change the printed character in first.asm and predict the ASCII code.
+2. Add 0x7F+1 and 0xFF+1; inspect results and PSW with the debugger/memory
+facilities available to your setup.
+3. Build a lookup table and prove the difference between MOVC and MOVX.
+4. Toggle only P1.0 while preserving all SD lines.
+5. On a separate bare-metal ROM, build a Timer 0 ISR with an explicit
+register-save contract; keep DOS/51's ROM untouched.
+
+[ DOS/51 FIELD MANUAL | IMANIA.DK | 2026-11-14 ]

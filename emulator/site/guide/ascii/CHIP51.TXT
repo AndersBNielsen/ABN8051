@@ -1,0 +1,92 @@
++------------------------------------------------------------------------+
+|                  05 / The stocked Philips P80C31SFPN                   |
++------------------------------------------------------------------------+
+
+EXACT DEVICE, NOT AN IMAGINARY SUPER-8051
+The shop part is Philips P80C31SFPN in PDIP-40. The Philips ordering table
+identifies S as the 16 MHz grade, F as -40 to +85 C and PN as plastic DIP.
+It is ROMless: an external program-memory circuit is required. Its 128
+internal RAM bytes are not the DOS/51 board's external SRAM. No ADC, DAC,
+native SPI, I2C, USB, internal program flash, PCA or watchdog is supplied
+by the basic part.
+
+IMPORTANT DATASHEET REVISION DISTINCTION
+The classic 8031/80C31 baseline has Timer 0, Timer 1, five interrupt
+sources and one DPTR. Philips' 7 August 2000 80C31/80C32 specification
+explicitly lists additional functions even in its Table 1 headed
+8XC51/80C31: Timer 2, dual DPTR, enhanced UART and four-level interrupt
+priority. Its prose and tables must not be replaced by a generic 8051
+feature list. This guide covers that documented Philips register set
+separately below. The current emulator implements the classic baseline,
+NOT those extensions. No silicon-revision or bench test of the stocked
+chips has been performed here; consult the exact production revision
+before depending on an extension. The shared document explicitly excludes
+WUPD from the 80C31.
+
+PDIP-40 PIN MAP - TOP VIEW, NOTCH AT TOP
+             +------U------+
+ P1.0/T2   1 |             | 40 VCC
+ P1.1/T2EX 2 |             | 39 P0.0/AD0
+ P1.2      3 |             | 38 P0.1/AD1
+ P1.3      4 |             | 37 P0.2/AD2
+ P1.4      5 |             | 36 P0.3/AD3
+ P1.5      6 |             | 35 P0.4/AD4
+ P1.6      7 |             | 34 P0.5/AD5
+ P1.7      8 |             | 33 P0.6/AD6
+ RST       9 |             | 32 P0.7/AD7
+ P3.0/RXD 10 |             | 31 /EA
+ P3.1/TXD 11 |             | 30 ALE
+ P3.2/INT0 12 |             | 29 /PSEN
+ P3.3/INT1 13 |             | 28 P2.7/A15
+ P3.4/T0  14 |             | 27 P2.6/A14
+ P3.5/T1  15 |             | 26 P2.5/A13
+ P3.6/WR  16 |             | 25 P2.4/A12
+ P3.7/RD  17 |             | 24 P2.3/A11
+ XTAL2    18 |             | 23 P2.2/A10
+ XTAL1    19 |             | 22 P2.1/A9
+ GND      20 |_____________| 21 P2.0/A8
+
+T2/T2EX labels refer to the documented Philips extension, not the
+emulator. INT0/INT1, WR and RD are active-low alternate signals. RST is
+active HIGH. /EA is the external-access PIN, not the interrupt-enable bit
+called EA. Tie /EA low for this ROMless CPU. Hold RST high for at least
+two machine cycles after the oscillator is running; allow oscillator
+startup at power-on.
+
+EXTERNAL BUS
+P0 multiplexes A0-A7 and D0-D7. ALE allows an external latch to retain the
+low address; P2 supplies A8-A15. /PSEN reads program memory, /RD and /WR
+access external data. A fetch begins with an address on the bus, ALE
+latches its low byte, then P0 changes to data and the selected read strobe
+enables memory output. Address decoding decides which physical chip
+responds. Use correctly timed glue logic and avoid two devices driving P0
+together.
+
+PORTS
+P0 is open-drain as ordinary GPIO and needs external pull-ups for a high
+output; its bus function has active pull-ups. P1/P2/P3 have
+quasi-bidirectional pull-ups: write a one to release a pin for input, then
+read it. Writing zero drives low. There is no separate DDR register. The
+advertised 32 port lines are not 32 spare GPIOs on a ROMless system:
+external code uses P0/P2 continuously, and UART, interrupts, timers and
+memory strobes consume P3 pins.
+
+CLOCK / POWER
+The oscillator amplifier uses XTAL1/XTAL2 with a crystal circuit; for an
+external clock drive XTAL1 and leave XTAL2 open as specified. The part is
+static and supports a stopped clock. IDL=PCON.0 stops the CPU but keeps
+relevant peripherals running; an enabled interrupt or reset leaves idle.
+PD=PCON.1 enters power-down, stopping the oscillator while retaining RAM
+under the specified supply conditions. Do not assume an external interrupt
+wakes an 80C31: the shared datasheet's WUPD feature is explicitly
+unavailable on it. Reset is the conservative recovery path. GPIO/reset
+behavior and supply limits must be checked for the chosen mode.
+
+The ordering table lists 2.7-5.5 V and up to 16 MHz for this S grade; use
+the electrical and AC tables for the actual supply, clock and loads.
+DOS/51 describes a 5 V board. An SD card needs 3.3 V power and suitable
+signal-level conversion; it is not a 5 V peripheral. Use a TTL-compatible
+serial adapter or a proper RS-232 transceiver, never raw RS-232 voltage on
+RXD.
+
+[ DOS/51 FIELD MANUAL | IMANIA.DK | 2026-11-14 ]

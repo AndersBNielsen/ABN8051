@@ -1,0 +1,1538 @@
+[
+  {
+    "op": 0,
+    "form": "NOP",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 1,
+    "form": "AJMP addr11",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 2,
+    "form": "LJMP addr16",
+    "bytes": 3,
+    "cycles": 2
+  },
+  {
+    "op": 3,
+    "form": "RR A",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 4,
+    "form": "INC A",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 5,
+    "form": "INC dir",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 6,
+    "form": "INC @R0",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 7,
+    "form": "INC @R1",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 8,
+    "form": "INC R0",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 9,
+    "form": "INC R1",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 10,
+    "form": "INC R2",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 11,
+    "form": "INC R3",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 12,
+    "form": "INC R4",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 13,
+    "form": "INC R5",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 14,
+    "form": "INC R6",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 15,
+    "form": "INC R7",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 16,
+    "form": "JBC bit,rel",
+    "bytes": 3,
+    "cycles": 2
+  },
+  {
+    "op": 17,
+    "form": "ACALL addr11",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 18,
+    "form": "LCALL addr16",
+    "bytes": 3,
+    "cycles": 2
+  },
+  {
+    "op": 19,
+    "form": "RRC A",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 20,
+    "form": "DEC A",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 21,
+    "form": "DEC dir",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 22,
+    "form": "DEC @R0",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 23,
+    "form": "DEC @R1",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 24,
+    "form": "DEC R0",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 25,
+    "form": "DEC R1",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 26,
+    "form": "DEC R2",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 27,
+    "form": "DEC R3",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 28,
+    "form": "DEC R4",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 29,
+    "form": "DEC R5",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 30,
+    "form": "DEC R6",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 31,
+    "form": "DEC R7",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 32,
+    "form": "JB bit,rel",
+    "bytes": 3,
+    "cycles": 2
+  },
+  {
+    "op": 33,
+    "form": "AJMP addr11",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 34,
+    "form": "RET",
+    "bytes": 1,
+    "cycles": 2
+  },
+  {
+    "op": 35,
+    "form": "RL A",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 36,
+    "form": "ADD A,#imm",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 37,
+    "form": "ADD A,dir",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 38,
+    "form": "ADD A,@R0",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 39,
+    "form": "ADD A,@R1",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 40,
+    "form": "ADD A,R0",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 41,
+    "form": "ADD A,R1",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 42,
+    "form": "ADD A,R2",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 43,
+    "form": "ADD A,R3",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 44,
+    "form": "ADD A,R4",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 45,
+    "form": "ADD A,R5",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 46,
+    "form": "ADD A,R6",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 47,
+    "form": "ADD A,R7",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 48,
+    "form": "JNB bit,rel",
+    "bytes": 3,
+    "cycles": 2
+  },
+  {
+    "op": 49,
+    "form": "ACALL addr11",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 50,
+    "form": "RETI",
+    "bytes": 1,
+    "cycles": 2
+  },
+  {
+    "op": 51,
+    "form": "RLC A",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 52,
+    "form": "ADDC A,#imm",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 53,
+    "form": "ADDC A,dir",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 54,
+    "form": "ADDC A,@R0",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 55,
+    "form": "ADDC A,@R1",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 56,
+    "form": "ADDC A,R0",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 57,
+    "form": "ADDC A,R1",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 58,
+    "form": "ADDC A,R2",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 59,
+    "form": "ADDC A,R3",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 60,
+    "form": "ADDC A,R4",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 61,
+    "form": "ADDC A,R5",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 62,
+    "form": "ADDC A,R6",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 63,
+    "form": "ADDC A,R7",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 64,
+    "form": "JC rel",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 65,
+    "form": "AJMP addr11",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 66,
+    "form": "ORL dir,A",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 67,
+    "form": "ORL dir,#imm",
+    "bytes": 3,
+    "cycles": 2
+  },
+  {
+    "op": 68,
+    "form": "ORL A,#imm",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 69,
+    "form": "ORL A,dir",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 70,
+    "form": "ORL A,@R0",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 71,
+    "form": "ORL A,@R1",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 72,
+    "form": "ORL A,R0",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 73,
+    "form": "ORL A,R1",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 74,
+    "form": "ORL A,R2",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 75,
+    "form": "ORL A,R3",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 76,
+    "form": "ORL A,R4",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 77,
+    "form": "ORL A,R5",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 78,
+    "form": "ORL A,R6",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 79,
+    "form": "ORL A,R7",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 80,
+    "form": "JNC rel",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 81,
+    "form": "ACALL addr11",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 82,
+    "form": "ANL dir,A",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 83,
+    "form": "ANL dir,#imm",
+    "bytes": 3,
+    "cycles": 2
+  },
+  {
+    "op": 84,
+    "form": "ANL A,#imm",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 85,
+    "form": "ANL A,dir",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 86,
+    "form": "ANL A,@R0",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 87,
+    "form": "ANL A,@R1",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 88,
+    "form": "ANL A,R0",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 89,
+    "form": "ANL A,R1",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 90,
+    "form": "ANL A,R2",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 91,
+    "form": "ANL A,R3",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 92,
+    "form": "ANL A,R4",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 93,
+    "form": "ANL A,R5",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 94,
+    "form": "ANL A,R6",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 95,
+    "form": "ANL A,R7",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 96,
+    "form": "JZ rel",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 97,
+    "form": "AJMP addr11",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 98,
+    "form": "XRL dir,A",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 99,
+    "form": "XRL dir,#imm",
+    "bytes": 3,
+    "cycles": 2
+  },
+  {
+    "op": 100,
+    "form": "XRL A,#imm",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 101,
+    "form": "XRL A,dir",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 102,
+    "form": "XRL A,@R0",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 103,
+    "form": "XRL A,@R1",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 104,
+    "form": "XRL A,R0",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 105,
+    "form": "XRL A,R1",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 106,
+    "form": "XRL A,R2",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 107,
+    "form": "XRL A,R3",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 108,
+    "form": "XRL A,R4",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 109,
+    "form": "XRL A,R5",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 110,
+    "form": "XRL A,R6",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 111,
+    "form": "XRL A,R7",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 112,
+    "form": "JNZ rel",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 113,
+    "form": "ACALL addr11",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 114,
+    "form": "ORL C,bit",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 115,
+    "form": "JMP @A+DPTR",
+    "bytes": 1,
+    "cycles": 2
+  },
+  {
+    "op": 116,
+    "form": "MOV A,#imm",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 117,
+    "form": "MOV dir,#imm",
+    "bytes": 3,
+    "cycles": 2
+  },
+  {
+    "op": 118,
+    "form": "MOV @R0,#imm",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 119,
+    "form": "MOV @R1,#imm",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 120,
+    "form": "MOV R0,#imm",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 121,
+    "form": "MOV R1,#imm",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 122,
+    "form": "MOV R2,#imm",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 123,
+    "form": "MOV R3,#imm",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 124,
+    "form": "MOV R4,#imm",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 125,
+    "form": "MOV R5,#imm",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 126,
+    "form": "MOV R6,#imm",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 127,
+    "form": "MOV R7,#imm",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 128,
+    "form": "SJMP rel",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 129,
+    "form": "AJMP addr11",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 130,
+    "form": "ANL C,bit",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 131,
+    "form": "MOVC A,@A+PC",
+    "bytes": 1,
+    "cycles": 2
+  },
+  {
+    "op": 132,
+    "form": "DIV AB",
+    "bytes": 1,
+    "cycles": 4
+  },
+  {
+    "op": 133,
+    "form": "MOV dir,dir",
+    "bytes": 3,
+    "cycles": 2
+  },
+  {
+    "op": 134,
+    "form": "MOV dir,@R0",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 135,
+    "form": "MOV dir,@R1",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 136,
+    "form": "MOV dir,R0",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 137,
+    "form": "MOV dir,R1",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 138,
+    "form": "MOV dir,R2",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 139,
+    "form": "MOV dir,R3",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 140,
+    "form": "MOV dir,R4",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 141,
+    "form": "MOV dir,R5",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 142,
+    "form": "MOV dir,R6",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 143,
+    "form": "MOV dir,R7",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 144,
+    "form": "MOV DPTR,#imm16",
+    "bytes": 3,
+    "cycles": 2
+  },
+  {
+    "op": 145,
+    "form": "ACALL addr11",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 146,
+    "form": "MOV bit,C",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 147,
+    "form": "MOVC A,@A+DPTR",
+    "bytes": 1,
+    "cycles": 2
+  },
+  {
+    "op": 148,
+    "form": "SUBB A,#imm",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 149,
+    "form": "SUBB A,dir",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 150,
+    "form": "SUBB A,@R0",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 151,
+    "form": "SUBB A,@R1",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 152,
+    "form": "SUBB A,R0",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 153,
+    "form": "SUBB A,R1",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 154,
+    "form": "SUBB A,R2",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 155,
+    "form": "SUBB A,R3",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 156,
+    "form": "SUBB A,R4",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 157,
+    "form": "SUBB A,R5",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 158,
+    "form": "SUBB A,R6",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 159,
+    "form": "SUBB A,R7",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 160,
+    "form": "ORL C,/bit",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 161,
+    "form": "AJMP addr11",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 162,
+    "form": "MOV C,bit",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 163,
+    "form": "INC DPTR",
+    "bytes": 1,
+    "cycles": 2
+  },
+  {
+    "op": 164,
+    "form": "MUL AB",
+    "bytes": 1,
+    "cycles": 4
+  },
+  {
+    "op": 165,
+    "form": "reserved",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 166,
+    "form": "MOV @R0,dir",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 167,
+    "form": "MOV @R1,dir",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 168,
+    "form": "MOV R0,dir",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 169,
+    "form": "MOV R1,dir",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 170,
+    "form": "MOV R2,dir",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 171,
+    "form": "MOV R3,dir",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 172,
+    "form": "MOV R4,dir",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 173,
+    "form": "MOV R5,dir",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 174,
+    "form": "MOV R6,dir",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 175,
+    "form": "MOV R7,dir",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 176,
+    "form": "ANL C,/bit",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 177,
+    "form": "ACALL addr11",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 178,
+    "form": "CPL bit",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 179,
+    "form": "CPL C",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 180,
+    "form": "CJNE A,#imm,rel",
+    "bytes": 3,
+    "cycles": 2
+  },
+  {
+    "op": 181,
+    "form": "CJNE A,dir,rel",
+    "bytes": 3,
+    "cycles": 2
+  },
+  {
+    "op": 182,
+    "form": "CJNE @R0,#imm,rel",
+    "bytes": 3,
+    "cycles": 2
+  },
+  {
+    "op": 183,
+    "form": "CJNE @R1,#imm,rel",
+    "bytes": 3,
+    "cycles": 2
+  },
+  {
+    "op": 184,
+    "form": "CJNE R0,#imm,rel",
+    "bytes": 3,
+    "cycles": 2
+  },
+  {
+    "op": 185,
+    "form": "CJNE R1,#imm,rel",
+    "bytes": 3,
+    "cycles": 2
+  },
+  {
+    "op": 186,
+    "form": "CJNE R2,#imm,rel",
+    "bytes": 3,
+    "cycles": 2
+  },
+  {
+    "op": 187,
+    "form": "CJNE R3,#imm,rel",
+    "bytes": 3,
+    "cycles": 2
+  },
+  {
+    "op": 188,
+    "form": "CJNE R4,#imm,rel",
+    "bytes": 3,
+    "cycles": 2
+  },
+  {
+    "op": 189,
+    "form": "CJNE R5,#imm,rel",
+    "bytes": 3,
+    "cycles": 2
+  },
+  {
+    "op": 190,
+    "form": "CJNE R6,#imm,rel",
+    "bytes": 3,
+    "cycles": 2
+  },
+  {
+    "op": 191,
+    "form": "CJNE R7,#imm,rel",
+    "bytes": 3,
+    "cycles": 2
+  },
+  {
+    "op": 192,
+    "form": "PUSH dir",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 193,
+    "form": "AJMP addr11",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 194,
+    "form": "CLR bit",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 195,
+    "form": "CLR C",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 196,
+    "form": "SWAP A",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 197,
+    "form": "XCH A,dir",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 198,
+    "form": "XCH A,@R0",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 199,
+    "form": "XCH A,@R1",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 200,
+    "form": "XCH A,R0",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 201,
+    "form": "XCH A,R1",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 202,
+    "form": "XCH A,R2",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 203,
+    "form": "XCH A,R3",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 204,
+    "form": "XCH A,R4",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 205,
+    "form": "XCH A,R5",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 206,
+    "form": "XCH A,R6",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 207,
+    "form": "XCH A,R7",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 208,
+    "form": "POP dir",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 209,
+    "form": "ACALL addr11",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 210,
+    "form": "SETB bit",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 211,
+    "form": "SETB C",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 212,
+    "form": "DA A",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 213,
+    "form": "DJNZ dir,rel",
+    "bytes": 3,
+    "cycles": 2
+  },
+  {
+    "op": 214,
+    "form": "XCHD A,@R0",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 215,
+    "form": "XCHD A,@R1",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 216,
+    "form": "DJNZ R0,rel",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 217,
+    "form": "DJNZ R1,rel",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 218,
+    "form": "DJNZ R2,rel",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 219,
+    "form": "DJNZ R3,rel",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 220,
+    "form": "DJNZ R4,rel",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 221,
+    "form": "DJNZ R5,rel",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 222,
+    "form": "DJNZ R6,rel",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 223,
+    "form": "DJNZ R7,rel",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 224,
+    "form": "MOVX A,@DPTR",
+    "bytes": 1,
+    "cycles": 2
+  },
+  {
+    "op": 225,
+    "form": "AJMP addr11",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 226,
+    "form": "MOVX A,@R0",
+    "bytes": 1,
+    "cycles": 2
+  },
+  {
+    "op": 227,
+    "form": "MOVX A,@R1",
+    "bytes": 1,
+    "cycles": 2
+  },
+  {
+    "op": 228,
+    "form": "CLR A",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 229,
+    "form": "MOV A,dir",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 230,
+    "form": "MOV A,@R0",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 231,
+    "form": "MOV A,@R1",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 232,
+    "form": "MOV A,R0",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 233,
+    "form": "MOV A,R1",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 234,
+    "form": "MOV A,R2",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 235,
+    "form": "MOV A,R3",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 236,
+    "form": "MOV A,R4",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 237,
+    "form": "MOV A,R5",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 238,
+    "form": "MOV A,R6",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 239,
+    "form": "MOV A,R7",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 240,
+    "form": "MOVX @DPTR,A",
+    "bytes": 1,
+    "cycles": 2
+  },
+  {
+    "op": 241,
+    "form": "ACALL addr11",
+    "bytes": 2,
+    "cycles": 2
+  },
+  {
+    "op": 242,
+    "form": "MOVX @R0,A",
+    "bytes": 1,
+    "cycles": 2
+  },
+  {
+    "op": 243,
+    "form": "MOVX @R1,A",
+    "bytes": 1,
+    "cycles": 2
+  },
+  {
+    "op": 244,
+    "form": "CPL A",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 245,
+    "form": "MOV dir,A",
+    "bytes": 2,
+    "cycles": 1
+  },
+  {
+    "op": 246,
+    "form": "MOV @R0,A",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 247,
+    "form": "MOV @R1,A",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 248,
+    "form": "MOV R0,A",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 249,
+    "form": "MOV R1,A",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 250,
+    "form": "MOV R2,A",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 251,
+    "form": "MOV R3,A",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 252,
+    "form": "MOV R4,A",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 253,
+    "form": "MOV R5,A",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 254,
+    "form": "MOV R6,A",
+    "bytes": 1,
+    "cycles": 1
+  },
+  {
+    "op": 255,
+    "form": "MOV R7,A",
+    "bytes": 1,
+    "cycles": 1
+  }
+]

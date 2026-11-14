@@ -1,0 +1,66 @@
+import { chromium } from 'playwright';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {execFileSync} from 'node:child_process';
+const base=process.argv[2]||'http://localhost:8766/';
+const browser=await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'});
+const context=await browser.newContext();
+const errors=[];
+await context.route('**/imania-static-analytics.js*',r=>r.fulfill({status:200,contentType:'text/javascript',body:''}));
+await context.route('**/googletagmanager.com/**',r=>r.fulfill({status:200,body:''}));
+const page=await context.newPage();
+page.on('pageerror',e=>errors.push(e.message));
+page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
+for(const width of [1440,390]){
+ await page.setViewportSize({width,height:1000});
+ await page.goto(base+'guide/');
+ await page.getByRole('heading',{name:/The Ultimate/}).waitFor();
+ assert.equal(await page.locator('.instruction').count(),44);
+ assert.equal(await page.locator('.instruction tbody tr').count(),111);
+ assert.equal(await page.locator('.opmap td').count(),256);
+ assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`overflow at ${width}`);
+ await page.locator('#search').fill('MOVX');
+ assert.equal(await page.locator('.instruction:not([hidden])').count(),1);
+ await page.locator('#search').fill('no-such-opcode');
+ assert.equal(await page.locator('.instruction:not([hidden])').count(),0);
+ await page.locator('#search').fill('');
+ await page.locator('#category').selectOption('bits');
+ assert.equal(await page.locator('.instruction:not([hidden])').count(),3);
+ await page.locator('#category').selectOption('all');
+ await page.screenshot({path:`/tmp/guide-${width}.png`,fullPage:width===390?false:false});
+}
+await page.setViewportSize({width:1440,height:1100});
+await page.goto(base);
+await page.waitForFunction(()=>document.querySelector('.xterm-rows')?.innerText.includes('dos51$'),{timeout:30000});
+assert.ok(await page.getByRole('link',{name:/The Ultimate 8051 Assembly Guide/}).count());
+await page.screenshot({path:'/tmp/guide-emulator-desktop.png',fullPage:true});
+const send=async s=>{await page.locator('#term').click();await page.keyboard.type(s,{delay:8});};
+await send('sdget guide51.txt\rcat guide51.txt\r');
+await page.waitForFunction(()=>document.querySelector('.xterm-rows')?.innerText.includes('FIELD ARCHIVE'),{timeout:30000});
+// A blank visitor card acquires missing manual files without losing MYWORK.TXT.
+page.on('dialog',d=>d.accept());
+await page.click('#cardnew');
+await send('echo visitor-owned > mine.txt\rsdput mine.txt\r');
+await page.waitForTimeout(2000);
+await page.click('#guideinstall');
+await page.getByText('10 manual files installed.',{exact:false}).waitFor();
+await page.click('#guideinstall');
+await page.getByText('Field manual already present.',{exact:false}).waitFor();
+const download=page.waitForEvent('download');await page.click('#carddl');
+const dl=await download;const img='/tmp/guide-browser-card.img';await dl.saveAs(img);
+const fatimg=new URL('fatimg.py',import.meta.url).pathname;
+const check=execFileSync('python3',[fatimg,img,'check'],{encoding:'utf8'});assert.match(check,/ok/);
+assert.match(execFileSync('python3',[fatimg,img,'get','MINE.TXT'],{encoding:'utf8'}),/visitor-owned/);
+for(const f of JSON.parse(fs.readFileSync(new URL('../site/guide/manifest.json',import.meta.url)))){
+ const got=execFileSync('python3',[fatimg,img,'get',f.name]);
+ const expected=fs.readFileSync(new URL('../site/guide/ascii/'+f.name,import.meta.url));
+ assert.deepEqual(got,expected);
+}
+await page.reload();await page.waitForTimeout(2000);await page.click('#guideinstall');
+await page.getByText('Field manual already present.',{exact:false}).waitFor();
+await page.setViewportSize({width:390,height:844});
+await page.screenshot({path:'/tmp/guide-emulator-mobile.png',fullPage:true});
+assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'emulator mobile overflow');
+assert.deepEqual(errors,[]);
+console.log('PASS: desktop/mobile guide, 44 mnemonics/111 forms/256 map cells, search/filter, emulator boot, real SD import, preserved visitor card, all ten exported files byte-identical, reload persistence; zero JS errors.');
+await browser.close();

@@ -29,6 +29,16 @@ const dropBlocksSource = new Uint8Array(await fetch('dropblk.asm').then((r) => {
   if (!r.ok) throw new Error(`DropBlocks source fetch failed: ${r.status}`);
   return r.arrayBuffer();
 }));
+// The field manual is fetched once; installing never replaces a visitor's files.
+const guideManifest = await fetch('guide/manifest.json?v=20261114').then(r => {
+  if (!r.ok) throw new Error(`Guide manifest fetch failed: ${r.status}`);
+  return r.json();
+});
+const guideFiles = await Promise.all(guideManifest.map(async ({ name }) => {
+  const r = await fetch(`guide/ascii/${name}?v=20261114`);
+  if (!r.ok) throw new Error(`Guide chapter fetch failed: ${r.status}`);
+  return { name, data: new Uint8Array(await r.arrayBuffer()) };
+}));
 const board = new Board({ rom, rxPacing: 'flow' });
 let restored = false;
 try {
@@ -113,6 +123,7 @@ async function loadCard() {
   }
   const image = formatCard(CARD_MB << 20);
   putFat16File(image, 'DROPBLK.ASM', dropBlocksSource);
+  for (const file of guideFiles) putFat16File(image, file.name, file.data);
   insertCard(image);
   return false;
 }
@@ -189,6 +200,26 @@ $('dropblocks').onclick = () => {
     term.write(added ? '\r\n[DROPBLK.ASM added to SD card; type sdget dropblk.asm]\r\n' :
       '\r\n[DROPBLK.ASM is already on the SD card; not overwritten]\r\n');
   } catch (e) { alert(`${e.message}. Download dropblk.asm and use Upload file… to copy it to the RAM disk.`); }
+  term.focus();
+};
+
+// Stage the entire library on a copy: a full/unsupported card is left unchanged.
+$('guideinstall').onclick = () => {
+  try {
+    const candidate = card.image.slice();
+    const ranges = [];
+    let added = 0;
+    for (const file of guideFiles) {
+      if (putFat16File(candidate, file.name, file.data, (off, len) => ranges.push([off, len]))) added++;
+    }
+    card.image.set(candidate);
+    for (const [off, len] of ranges) card.onWrite(off, len);
+    $('guidestatus').textContent = added ? `${added} manual files installed. Type sdget guide51.txt, then cat guide51.txt.` :
+      'Field manual already present. Existing files were not overwritten.';
+    term.write(`\r\n[FIELD ARCHIVE / ${added} files added / existing files preserved]\r\n[sdget guide51.txt  then  cat guide51.txt]\r\n`);
+  } catch (e) {
+    $('guidestatus').textContent = `${e.message}. Card unchanged. Download the ASCII ZIP for other cards.`;
+  }
   term.focus();
 };
 

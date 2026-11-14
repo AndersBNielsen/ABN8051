@@ -61,8 +61,14 @@
       <small>Both RAM chips are kept in this browser, so files survive a reload; Power cycle clears them. Nothing you type is uploaded.</small>
     </section>
     <section class="panel">
-      <h2>SD card</h2>
+      <h2>SD card <span class="card-badge">FIELD ARCHIVE / 01</span></h2>
       <p>The board has an SD card on P1.4–P1.7 (SPI). Here it is a 16 MiB FAT16 image stored in your browser. Card files use 8.3 names in the root directory.</p>
+      <a class="field-card" href="guide/">
+        <span class="field-chip" aria-hidden="true"><b>8051</b><i>ASCII / VOL.01</i><em>▌▌▌▌▌▌▌▌</em></span>
+        <span><small>THE ULTIMATE</small><strong>8051 Assembly Guide</strong><span>44 mnemonics. Every standard instruction.<br>Read online or carry the ASCII field edition.</span><b>Open the field manual ↗</b></span>
+      </a>
+      <div class="actions guide-actions"><button id="guideinstall" type="button">Install field manual</button><a href="guide/8051-field-manual.zip" download>ASCII edition ↓</a></div>
+      <p id="guidestatus" class="guide-status" role="status">New cards include the manual. Existing cards are preserved; install adds only missing files. Start with <code>sdget guide51.txt</code>, then <code>cat guide51.txt</code>.</p>
       <div class="actions">
         <button id="dropblocks" type="button" title="Add DropBlocks to a FAT16 SD card without replacing existing files">Add DropBlocks</button>
         <button id="carddl" type="button" title="Save the virtual SD card as a disk image (FAT16, readable on a PC)">Download card</button>
@@ -87,7 +93,7 @@
     </section>
   </aside>
 </main>
-<footer><span>DOS/51 browser emulator · Static HTML, CSS &amp; JavaScript</span><span><a href="/samlesaet-hobbyelektronik-og-ic-er-philips-p80c31sfpn-80c31-8051-microcontroller-dip40.htm?language=en">80C31 CPU</a> · <a href="https://github.com/AndersBNielsen/ABN8051">ABN8051 on GitHub</a> · <a href="https://github.com/AndersBNielsen/ABN8051/tree/main/emulator">Emulator &amp; firmware source</a></span></footer>
+<footer><span>DOS/51 browser emulator · Static HTML, CSS &amp; JavaScript</span><span><a href="guide/">The Ultimate 8051 Assembly Guide</a> · <a href="/samlesaet-hobbyelektronik-og-ic-er-philips-p80c31sfpn-80c31-8051-microcontroller-dip40.htm?language=en">80C31 CPU</a> · <a href="https://github.com/AndersBNielsen/ABN8051">ABN8051 on GitHub</a> · <a href="https://github.com/AndersBNielsen/ABN8051/tree/main/emulator">Emulator &amp; firmware source</a></span></footer>
 <script src="vendor/xterm.js"></script>
 <script type="module" src="app.js"></script>
 </body>

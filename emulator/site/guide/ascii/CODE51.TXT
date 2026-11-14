@@ -1,0 +1,94 @@
++------------------------------------------------------------------------+
+|                    04 / Practical assembly patterns                    |
++------------------------------------------------------------------------+
+
+BIT TESTS AND COUNTED LOOPS
+    mov r7,#10
+again:
+    ; body executes ten times
+    djnz r7,again
+    ret
+
+Starting R7 at zero executes 256 iterations, not zero. DJNZ changes no
+arithmetic flags. Conditional branches and SJMP have a signed -128..+127
+byte displacement measured from the instruction AFTER the branch. For a
+far condition, invert the test and use LJMP. AJMP/ACALL require the target
+to share the 2-KiB page of the NEXT instruction, so code near a page
+boundary needs special care.
+
+UNSIGNED COMPARE
+    cjne a,#10,different
+    ; A == 10; CY is now 0
+    sjmp done
+different:
+    jc below         ; unsigned A < 10
+    ; otherwise A > 10
+below:
+done:
+    ret
+
+PACKED BCD
+    mov a,#0x45
+    add a,#0x38
+    da a             ; A = 83 (hex encoding of decimal 83)
+    ret
+
+DA is for the result of packed-BCD ADD/ADDC with valid BCD operands. It is
+not binary-to-decimal conversion and is not the correction for
+subtraction. DA may set CY; it does not clear an existing carry. AC/OV are
+not a decimal result test.
+
+LOOKUP TABLE (DOS/51 PROGRAM)
+    mov dptr,#table
+    mov a,#2
+    movc a,@a+dptr    ; A = ASCII '2'
+    ret
+table:
+    db 48,49,50,51
+
+CODE and XDATA overlap physically only where a BOARD wires them that way.
+DOS/51's upper RAM is deliberately visible in both spaces, allowing its
+assembler to write instructions with MOVX and then execute them. A generic
+80C31 does not create executable RAM by itself.
+
+MULTIPLY / DIVIDE
+    mov a,#200
+    mov 0xF0,#3      ; B
+    mul ab           ; B:A = 0x0258 (600), CY=0, OV=1
+    mov a,#200
+    mov 0xF0,#7
+    div ab           ; A=28 quotient, B=4 remainder, CY=0
+    ret
+
+DIV by zero sets OV and leaves A/B results undefined. Check B before
+dividing. MUL and DIV are unsigned; signed multiplication/division need
+additional sign handling.
+
+ROTATE / SHIFT
+RL/RR rotate within A and leave CY alone. RLC/RRC rotate the nine-bit CY:A
+chain. For an unsigned right shift use CLR C followed by RRC A. A
+multi-byte right shift starts at the high byte; a left shift starts at the
+low byte. SWAP A exchanges nibbles; XCH exchanges whole bytes; XCHD
+exchanges only the low nibbles of A and an indirectly addressed RAM byte.
+
+MASKS
+    anl 0x90,#0xFE   ; clear P1.0, preserve other latches
+    orl 0x90,#0x01   ; set P1.0, preserve other latches
+    cpl 0x90         ; BIT address 90: toggle P1.0
+
+These examples use numeric SFR/bit addresses for DOS/51 portability. In a
+desktop assembler, prefer named EQU/bit declarations from the exact chip
+header. Do not assume another assembler's names, macros or directives
+exist in the small on-board assembler.
+
+SUBROUTINE CONTRACTS
+Document inputs, outputs, scratch registers and flags. Save only what your
+calling convention requires, but do not silently change the register bank.
+RET restores PC, not A, B, PSW or DPTR. Interrupt entry likewise does not
+preserve your working registers. For a callable DOS/51 program, keep the
+shell's stack valid and restore any state you borrow. An endless loop,
+disabled interrupts or a changed UART can make the shell appear dead;
+Reset recovers execution but does not undo files overwritten on the RAM
+disk.
+
+[ DOS/51 FIELD MANUAL | IMANIA.DK | 2026-11-14 ]

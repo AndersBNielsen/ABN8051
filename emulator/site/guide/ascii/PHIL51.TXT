@@ -1,0 +1,93 @@
++------------------------------------------------------------------------+
+|                    07 / Philips-specific extensions                    |
++------------------------------------------------------------------------+
+
+SCOPE
+This chapter follows Philips' 2000-08-07 80C31/80C32 specification,
+including its Table 1 explicitly headed 8XC51/80C31. These functions are
+not part of the standard instruction set and are not implemented by the
+present DOS/51 emulator. The shop's actual silicon revision has not been
+bench-identified; the shared datasheet must be reconciled with the
+particular chip before writing extension-dependent production code. Core
+instructions do not change: SFR configuration exposes the extra hardware.
+
+TIMER 2
+Documented registers: T2CON=C8, T2MOD=C9, RCAP2L=CA, RCAP2H=CB, TL2=CC,
+TH2=CD. T2CON is bit-addressable; T2MOD is not. Timer 2 adds 16-bit
+capture, auto-reload up/down counting and an independent UART baud source.
+P1.0 is T2/clock-out and P1.1 is T2EX.
+T2CON bits: TF2 EXF2 RCLK TCLK EXEN2 TR2 C/T2 CP/RL2.
+TR2 starts the counter; C/T2 chooses internal timer or external
+falling-edge count. CP/RL2=1 selects capture; zero selects reload when not
+overridden by the UART baud configuration. EXEN2 enables external
+capture/reload events. Software must clear TF2 and EXF2 in the shared
+Timer 2 handler; unlike Timer 0/1 overflow flags they are not
+automatically cleared on vector entry.
+
+Capture copies TL2/TH2 into RCAP2L/H on a qualifying T2EX falling edge
+without stopping the running counter. Auto-reload reloads the
+capture/reload value on overflow, and optionally on a T2EX edge.
+T2MOD.DCEN enables up/down selection by T2EX; EXF2 behavior then changes
+and is not the same interrupt source as ordinary capture. Consult the mode
+diagram rather than reusing a capture ISR unaltered.
+
+Setting TCLK and/or RCLK routes Timer 2 to transmit/receive baud
+respectively; the other direction can remain on Timer 1. Internally
+clocked UART baud is fosc / [32 * (65536 - RCAP2)]. At 11.0592 MHz,
+RCAP2=FFDC gives 9600 baud. In this baud mode the internal counter
+advances at fosc/2, not fosc/12, and rollover does not set TF2. Stop TR2
+before changing reload/counter configuration.
+
+For clock output on P1.0, clear C/T2, set T2MOD.T2OE and TR2. Frequency =
+fosc / [4 * (65536 - RCAP2)]. The pin is no longer ordinary GPIO.
+Clock-out and baud generation do not provide an ordinary overflow
+interrupt in the same way as timer mode. These formulas do not describe
+the emulator's bit-banged SD clock.
+
+DUAL DATA POINTER
+AUXR1 at A2, bit 0 (DPS), selects DPTR0 or DPTR1. The selected pointer
+appears through DPL/DPH and is used by MOV DPTR,#imm16, INC DPTR, MOVC
+A,@A+DPTR, MOVX through DPTR and JMP @A+DPTR. Save selection as well as
+pointer values across calls/interrupts. A2 is NOT a bit-addressable SFR;
+do not write SETB 0xA2 expecting to select DPTR1 (that bit address belongs
+to P2). Mask the byte with ORL 0xA2,#1 / ANL 0xA2,#0xFE. Reserve undefined
+bits. Two pointers let a copy loop alternate source/destination addresses
+without reloading both address bytes every iteration.
+
+FOUR INTERRUPT PRIORITIES
+The documented IPH register at B7 supplies the high priority bit; IP at B8
+supplies the low bit. IPH:IP combinations 00,01,10,11 select levels 0-3
+for each source. IPH is not bit-addressable. Timer 2 adds ET2 at IE.5, PT2
+at IP.5 and PT2H at IPH.5, with vector 002B. The serial source still
+shares RI/TI. Preserve unused bits and arrange a real stack/register-save
+strategy for nested handlers.
+
+ENHANCED UART
+SADDR=A9 holds a slave address and SADEN=B9 masks it for automatic address
+recognition. These byte SFRs are not bit-addressable. SM2 and the
+ninth-bit multiprocessor protocol allow address filtering rather than
+interrupting for every data byte. Review given/broadcast-address matching
+in the Philips diagrams before choosing a mask.
+
+PCON.6 (SMOD0) chooses whether SCON.7 is the mode bit SM0 or framing-error
+status FE. A missing stop bit sets FE when this feature is selected;
+software clears it. Configure UART mode with the correct SMOD0 setting
+first, so a status bit is not mistaken for the mode-selection bit. PCON.7
+remains baud doubler SMOD1. This is not a new CPU opcode or a second UART.
+
+POWER / ALE
+AUXR=8E, bit 0 (AO), controls the reduced-EMI ALE feature described by
+Philips. It is not bit-addressable. A ROMless board relies on the external
+fetch bus, so do not casually suppress the address-latch mechanism. Verify
+the documented behavior for external program/data cycles and the actual
+board's latch.
+
+PCON also documents a power-off flag POF and software flags GF1/GF0; reset
+source affects reset values. The shared datasheet describes asynchronous
+port reset and power-down behavior. Its AUXR1.WUPD external-interrupt wake
+option is specifically marked unavailable on 80C31; do not promise 80C32
+wake behavior for this stocked part. Full electrical limits, reset timing
+and mode transitions belong to the original manufacturer specification
+linked in the web edition.
+
+[ DOS/51 FIELD MANUAL | IMANIA.DK | 2026-11-14 ]

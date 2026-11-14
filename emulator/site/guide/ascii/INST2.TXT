@@ -1,0 +1,284 @@
++------------------------------------------------------------------------+
+|                   03B / INSTRUCTION DESK: MOV - XRL                    |
++------------------------------------------------------------------------+
+
+MOV / DATA
+----------------------------------------
+Copy a byte, bit or 16-bit immediate pointer. Destination comes first.
+Source is unchanged; MOV does not implicitly go through A.
+
+Example: mov 0x30,#0x2A
+Watch: MOV direct,direct encodes the SOURCE address before the
+destination, even though assembly syntax writes destination first. MOV
+C,bit and MOV bit,C explicitly read/write carry; other forms do not set
+arithmetic flags unless targeting PSW.
+
+OPERANDS                          BYTES MC  FLAGS
+MOV A,#imm                         2    1  -
+MOV dir,#imm                       3    2  -
+MOV @Ri,#imm                       2    1  -
+MOV Rn,#imm                        2    1  -
+MOV dir,dir                        3    2  -
+MOV dir,@Ri                        2    2  -
+MOV dir,Rn                         2    2  -
+MOV DPTR,#imm16                    3    2  -
+MOV bit,C                          2    2  -
+MOV C,bit                          2    1  CY
+MOV @Ri,dir                        2    2  -
+MOV Rn,dir                         2    2  -
+MOV A,dir                          2    1  -
+MOV A,@Ri                          1    1  -
+MOV A,Rn                           1    1  -
+MOV dir,A                          2    1  -
+MOV @Ri,A                          1    1  -
+MOV Rn,A                           1    1  -
+
+MOVC / DATA
+----------------------------------------
+Read a CODE byte at A+DPTR or A+PC into A. The PC-relative base is the
+address after the one-byte opcode. The index addition wraps in 16 bits.
+
+Example: movc a,@a+dptr
+Watch: A is both the input index and the returned byte. DPTR is not
+incremented.
+
+OPERANDS                          BYTES MC  FLAGS
+MOVC A,@A+PC                       1    2  -
+MOVC A,@A+DPTR                     1    2  -
+
+MOVX / DATA
+----------------------------------------
+Transfer between A and external DATA using @DPTR or @R0/@R1 addressing.
+Does not access SFRs or internal RAM.
+
+Example: movx @dptr,a
+Watch: Only A transfers data. @Ri provides an 8-bit low address; P2
+supplies the board's high-address context on classic hardware.
+
+OPERANDS                          BYTES MC  FLAGS
+MOVX A,@DPTR                       1    2  -
+MOVX A,@Ri                         1    2  -
+MOVX @DPTR,A                       1    2  -
+MOVX @Ri,A                         1    2  -
+
+MUL / ARITHMETIC
+----------------------------------------
+Unsigned multiply A by B; the low product byte is A and the high byte B.
+CY is cleared; OV is one if B's result is nonzero.
+
+Example: mul ab
+Watch: B:A is a 16-bit result; neither operand is signed automatically.
+
+OPERANDS                          BYTES MC  FLAGS
+MUL AB                             1    4  CY=0 OV
+
+NOP / FLOW
+----------------------------------------
+Consume one machine cycle without changing program-visible state apart
+from PC and normal peripheral progress.
+
+Example: nop
+Watch: This is a timing instruction, not a sleep mode; timers and
+interrupts still matter.
+
+OPERANDS                          BYTES MC  FLAGS
+NOP                                1    1  -
+
+ORL / LOGIC
+----------------------------------------
+Bitwise OR for byte forms; Boolean forms compute C OR bit or C OR NOT bit.
+
+Example: orl 0x90,#1
+Watch: Only the Boolean forms inherently change CY. A byte destination
+that is PSW can of course change flags.
+
+OPERANDS                          BYTES MC  FLAGS
+ORL dir,A                          2    1  -
+ORL dir,#imm                       3    2  -
+ORL A,#imm                         2    1  -
+ORL A,dir                          2    1  -
+ORL A,@Ri                          1    1  -
+ORL A,Rn                           1    1  -
+ORL C,bit                          2    2  CY
+ORL C,/bit                         2    2  CY
+
+POP / DATA
+----------------------------------------
+Read the byte at SP into the direct destination, then decrement SP.
+
+Example: pop 0xE0
+Watch: Pop in reverse order of pushes. No POP Rn hardware form exists; use
+a direct byte address with the intended register bank.
+
+OPERANDS                          BYTES MC  FLAGS
+POP dir                            2    2  -
+
+PUSH / DATA
+----------------------------------------
+Increment SP, then copy the direct source byte onto the internal-RAM
+stack.
+
+Example: push 0xE0
+Watch: No PUSH #immediate instruction. Stack overflow above 7F is not
+valid extra RAM on this 80C31.
+
+OPERANDS                          BYTES MC  FLAGS
+PUSH dir                           2    2  -
+
+RET / FLOW
+----------------------------------------
+Pop the two-byte return PC for a subroutine.
+
+Example: ret
+Watch: Does not restore scratch registers or release interrupt priority
+in-service state.
+
+OPERANDS                          BYTES MC  FLAGS
+RET                                1    2  -
+
+RETI / FLOW
+----------------------------------------
+Restore the return PC and notify the interrupt controller that the
+interrupt service has finished.
+
+Example: reti
+Watch: Save/restore the working state yourself. Use for an ISR, not as an
+interchangeable spelling of RET.
+
+OPERANDS                          BYTES MC  FLAGS
+RETI                               1    2  -
+
+RL / LOGIC
+----------------------------------------
+Rotate A left: old bit 7 becomes bit 0. Carry is unchanged.
+
+Example: rl a
+Watch: A circular rotate is not a zero-filling shift.
+
+OPERANDS                          BYTES MC  FLAGS
+RL A                               1    1  -
+
+RLC / LOGIC
+----------------------------------------
+Rotate CY:A left through carry: old A.7 becomes CY and old CY becomes A.0.
+
+Example: rlc a
+Watch: Clear carry first for the low byte of a logical left shift.
+
+OPERANDS                          BYTES MC  FLAGS
+RLC A                              1    1  CY
+
+RR / LOGIC
+----------------------------------------
+Rotate A right: old bit 0 becomes bit 7. Carry is unchanged.
+
+Example: rr a
+Watch: Not an arithmetic right shift.
+
+OPERANDS                          BYTES MC  FLAGS
+RR A                               1    1  -
+
+RRC / LOGIC
+----------------------------------------
+Rotate CY:A right through carry: old A.0 becomes CY and old CY becomes
+A.7.
+
+Example: rrc a
+Watch: Clear carry for a zero-filled shift; for signed arithmetic shifting
+supply the original sign bit as carry.
+
+OPERANDS                          BYTES MC  FLAGS
+RRC A                              1    1  CY
+
+SETB / BITS
+----------------------------------------
+Set carry or a directly addressed bit to one.
+
+Example: setb 0x97
+Watch: Setting a quasi-bidirectional port latch releases it for input;
+here bit 97 is P1.7.
+
+OPERANDS                          BYTES MC  FLAGS
+SETB bit                           2    1  -
+SETB C                             1    1  CY
+
+SJMP / FLOW
+----------------------------------------
+Jump by a signed 8-bit displacement relative to PC after the two-byte
+instruction.
+
+Example: sjmp loop
+Watch: Range -128..+127 bytes, not instructions. SJMP to itself is an
+infinite loop, not a return.
+
+OPERANDS                          BYTES MC  FLAGS
+SJMP rel                           2    2  -
+
+SUBB / ARITHMETIC
+----------------------------------------
+A = A - source - incoming CY. Sets CY for unsigned borrow and updates AC
+and OV.
+
+Example: subb a,#1
+Watch: Clear carry for ordinary subtraction; keep the borrow chain for
+multi-byte subtraction.
+
+OPERANDS                          BYTES MC  FLAGS
+SUBB A,#imm                        2    1  CY AC OV
+SUBB A,dir                         2    1  CY AC OV
+SUBB A,@Ri                         1    1  CY AC OV
+SUBB A,Rn                          1    1  CY AC OV
+
+SWAP / LOGIC
+----------------------------------------
+Exchange the high and low nibbles of A. Arithmetic flags remain unchanged.
+
+Example: swap a
+Watch: AB becomes BA in hexadecimal; this is not byte-order swapping of a
+16-bit value.
+
+OPERANDS                          BYTES MC  FLAGS
+SWAP A                             1    1  -
+
+XCH / DATA
+----------------------------------------
+Exchange A with an Rn register, direct byte or internal RAM through @Ri.
+
+Example: xch a,r3
+Watch: There is no XCH between two arbitrary direct bytes or with XDATA.
+
+OPERANDS                          BYTES MC  FLAGS
+XCH A,dir                          2    1  -
+XCH A,@Ri                          1    1  -
+XCH A,Rn                           1    1  -
+
+XCHD / DATA
+----------------------------------------
+Exchange the low four bits of A with the low four bits of internal RAM at
+@R0/@R1. High nibbles are unchanged.
+
+Example: xchd a,@r0
+Watch: Only internal indirect RAM addressing is legal; it is not an
+external nibble-memory operation.
+
+OPERANDS                          BYTES MC  FLAGS
+XCHD A,@Ri                         1    1  -
+
+XRL / LOGIC
+----------------------------------------
+Bitwise exclusive-OR using A or a direct byte destination. There is no
+Boolean XRL C,bit form.
+
+Example: xrl a,#0xFF
+Watch: For Boolean XOR implement the operation with available carry/bit
+instructions instead.
+
+OPERANDS                          BYTES MC  FLAGS
+XRL dir,A                          2    1  -
+XRL dir,#imm                       3    2  -
+XRL A,#imm                         2    1  -
+XRL A,dir                          2    1  -
+XRL A,@Ri                          1    1  -
+XRL A,Rn                           1    1  -
+
+[ DOS/51 FIELD MANUAL | IMANIA.DK | 2026-11-14 ]

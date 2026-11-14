@@ -1,0 +1,57 @@
++------------------------------------------------------------------------+
+|                        01 / Think like an 8051                         |
++------------------------------------------------------------------------+
+
+An 8051 executes small instructions on bytes and individual bits. The
+accumulator A is the main arithmetic register; B assists multiplication
+and division. R0-R7 are eight working registers selected from one of four
+banks in internal RAM. DPTR is a 16-bit address register, split into DPH
+and DPL. PC is the program counter; SP points to the last occupied byte of
+the internal-RAM stack.
+
+A byte holds 0-255 unsigned or -128 to +127 in two's-complement notation.
+The bit pattern is the same: your program chooses the interpretation.
+Hexadecimal 0x2A is decimal 42. In these examples # means an immediate
+constant, @ means indirect addressing and a semicolon begins a comment.
+DOS/51 accepts 0x-prefixed numbers; many desktop assemblers also accept
+2AH. Directives such as ORG, DB, EQU and END are assembler commands, not
+CPU instructions, and their spelling depends on the assembler.
+
+The classic CPU has 44 instruction mnemonics, conventionally grouped into
+111 operand forms, represented by 255 defined opcode bytes. Opcode A5 is
+reserved. Register-number and page-address bits explain why one form can
+have several opcodes. This guide covers the original instruction set, not
+8051-compatible vendors' later extra opcodes.
+
+One classic machine cycle is 12 oscillator clocks. At the DOS/51 board's
+11.0592 MHz that is 1.085 microseconds. Most instructions take one or two
+machine cycles; MUL and DIV take four. A modern 1T 8051 derivative is not
+timing-compatible. The reference gives classic hardware timing, not a
+benchmark of JavaScript execution.
+
+TRY IT IN DOS/51
+Open nano first.asm, enter the program below, save with Ctrl-O and leave
+with Ctrl-X. Run asm -r first.asm. DOS/51 assembles at 0x8000; RET returns
+to the shell. This example prints an asterisk through the board's existing
+UART configuration. It does not reinitialize hardware owned by the
+operating system.
+
+    clr 0x99         ; clear stale TI before transmitting
+    mov a,#42
+    mov 0x99,a        ; SBUF: transmit '*'
+wait_tx:
+    jnb 0x99,wait_tx  ; bit address 0x99 is TI, not SBUF
+    clr 0x99         ; acknowledge transmit completion
+    ret
+
+That apparent address collision is deliberate: direct byte 0x99 is SBUF,
+whereas bit address 0x99 is SCON.1 (TI). The CPU instruction determines
+which address space is used.
+
+Bare-metal programs are different: they start at reset address 0x0000,
+provide vectors, initialize SP, ports and peripherals, then run forever.
+Do not copy a reset-vector program into the DOS/51 transient area and
+expect it to own the machine. Save work before experiments that alter the
+stack, interrupt state or UART.
+
+[ DOS/51 FIELD MANUAL | IMANIA.DK | 2026-11-14 ]

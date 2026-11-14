@@ -1,0 +1,298 @@
++------------------------------------------------------------------------+
+|                  03A / INSTRUCTION DESK: ACALL - LJMP                  |
++------------------------------------------------------------------------+
+
+ACALL / FLOW
+----------------------------------------
+Push the address after this instruction and call a target in the same
+2-KiB page as that return address. Uses two internal stack bytes; no
+automatic register saves.
+
+Example: acall worker
+Watch: Use LCALL if placement is not guaranteed. Page bits are checked
+against PC after the two-byte call.
+
+OPERANDS                          BYTES MC  FLAGS
+ACALL addr11                       2    2  -
+
+ADD / ARITHMETIC
+----------------------------------------
+A = A + source; CY, AC and OV describe the unsigned, nibble and signed
+results. Incoming CY is ignored.
+
+Example: add a,#1
+Watch: For multi-byte addition use ADD on the low byte and ADDC on
+subsequent bytes.
+
+OPERANDS                          BYTES MC  FLAGS
+ADD A,#imm                         2    1  CY AC OV
+ADD A,dir                          2    1  CY AC OV
+ADD A,@Ri                          1    1  CY AC OV
+ADD A,Rn                           1    1  CY AC OV
+
+ADDC / ARITHMETIC
+----------------------------------------
+A = A + source + incoming CY. Updates CY, AC and OV.
+
+Example: addc a,r2
+Watch: Initialize carry deliberately if this is the first byte of a
+calculation.
+
+OPERANDS                          BYTES MC  FLAGS
+ADDC A,#imm                        2    1  CY AC OV
+ADDC A,dir                         2    1  CY AC OV
+ADDC A,@Ri                         1    1  CY AC OV
+ADDC A,Rn                          1    1  CY AC OV
+
+AJMP / FLOW
+----------------------------------------
+Jump within the 2-KiB page containing the first byte after this
+instruction. Does not push a return address.
+
+Example: ajmp destination
+Watch: Crossing a page boundary during layout can invalidate a previously
+legal target.
+
+OPERANDS                          BYTES MC  FLAGS
+AJMP addr11                        2    2  -
+
+ANL / LOGIC
+----------------------------------------
+Bitwise AND for byte operands. Boolean forms compute C AND bit or C AND
+NOT bit; the / complements the source only.
+
+Example: anl 0x90,#0xFE
+Watch: Byte forms preserve CY/AC/OV unless explicitly writing PSW. Boolean
+forms change C. Port destinations use their latch.
+
+OPERANDS                          BYTES MC  FLAGS
+ANL dir,A                          2    1  -
+ANL dir,#imm                       3    2  -
+ANL A,#imm                         2    1  -
+ANL A,dir                          2    1  -
+ANL A,@Ri                          1    1  -
+ANL A,Rn                           1    1  -
+ANL C,bit                          2    2  CY
+ANL C,/bit                         2    2  CY
+
+CJNE / FLOW
+----------------------------------------
+Compare without modifying either operand; branch if unequal. CY becomes 1
+when the first operand is unsigned-less-than the second, otherwise 0.
+
+Example: cjne a,#10,different
+Watch: This is unsigned comparison, not a signed less-than instruction. CY
+changes even if the branch is not taken.
+
+OPERANDS                          BYTES MC  FLAGS
+CJNE A,#imm,rel                    3    2  CY
+CJNE A,dir,rel                     3    2  CY
+CJNE @Ri,#imm,rel                  3    2  CY
+CJNE Rn,#imm,rel                   3    2  CY
+
+CLR / BITS
+----------------------------------------
+Clear A, C or one directly addressed bit. CLR A does not clear carry.
+
+Example: clr c
+Watch: Use CLR C before the first SUBB when no incoming borrow is
+intended.
+
+OPERANDS                          BYTES MC  FLAGS
+CLR bit                            2    1  -
+CLR C                              1    1  CY
+CLR A                              1    1  -
+
+CPL / BITS
+----------------------------------------
+Complement all bits in A, carry alone or a single directly addressed bit.
+
+Example: cpl 0x90
+Watch: CPL A leaves CY alone; CPL C toggles CY. A port-bit complement
+reads the latch.
+
+OPERANDS                          BYTES MC  FLAGS
+CPL bit                            2    1  -
+CPL C                              1    1  CY
+CPL A                              1    1  -
+
+DA / ARITHMETIC
+----------------------------------------
+Decimal-adjust A after packed-BCD ADD/ADDC, using the low nibble, AC, high
+digit and CY. Can set carry for a decimal carry out; does not clear an
+existing carry.
+
+Example: da a
+Watch: Only for valid packed-BCD addition. Not binary-to-BCD conversion or
+decimal subtraction.
+
+OPERANDS                          BYTES MC  FLAGS
+DA A                               1    1  CY
+
+DEC / ARITHMETIC
+----------------------------------------
+Subtract one modulo 256 from A, an Rn register, a direct byte or internal
+RAM through @Ri. Does not update CY, AC or OV.
+
+Example: dec r7
+Watch: There is no DEC DPTR instruction. A becomes FF when decrementing
+zero.
+
+OPERANDS                          BYTES MC  FLAGS
+DEC A                              1    1  -
+DEC dir                            2    1  -
+DEC @Ri                            1    1  -
+DEC Rn                             1    1  -
+
+DIV / ARITHMETIC
+----------------------------------------
+Unsigned divide A by B: quotient in A, remainder in B. CY is cleared; OV
+is cleared for a nonzero divisor and set for zero.
+
+Example: div ab
+Watch: When B is zero A and B are undefined. Test the divisor first.
+
+OPERANDS                          BYTES MC  FLAGS
+DIV AB                             1    4  CY=0 OV
+
+DJNZ / FLOW
+----------------------------------------
+Decrement an Rn register or direct byte modulo 256, then branch if that
+result is nonzero. Arithmetic flags are unchanged.
+
+Example: djnz r7,loop
+Watch: An initial zero count wraps to FF and yields 256 iterations in a
+bottom-tested loop.
+
+OPERANDS                          BYTES MC  FLAGS
+DJNZ dir,rel                       3    2  -
+DJNZ Rn,rel                        2    2  -
+
+INC / ARITHMETIC
+----------------------------------------
+Add one modulo 256 to a byte, or modulo 65536 to DPTR. Does not update CY,
+AC or OV.
+
+Example: inc dptr
+Watch: DPTR is the only 16-bit INC destination; it does not provide a
+carry flag on rollover.
+
+OPERANDS                          BYTES MC  FLAGS
+INC A                              1    1  -
+INC dir                            2    1  -
+INC @Ri                            1    1  -
+INC Rn                             1    1  -
+INC DPTR                           1    2  -
+
+JB / FLOW
+----------------------------------------
+Branch when the addressed bit is one, leaving it unchanged.
+
+Example: jb 0x90,high
+Watch: A port test reads the pin; bit address 90 is P1.0, not the full P1
+byte.
+
+OPERANDS                          BYTES MC  FLAGS
+JB bit,rel                         3    2  -
+
+JBC / FLOW
+----------------------------------------
+If the addressed bit is one, clear it and branch. If zero, neither branch
+nor clear has an effect.
+
+Example: jbc 0x00,event
+Watch: Useful for consuming a one-bit event flag. A port operation of this
+kind uses the latch.
+
+OPERANDS                          BYTES MC  FLAGS
+JBC bit,rel                        3    2  -
+
+JC / FLOW
+----------------------------------------
+Branch when CY is one.
+
+Example: jc carry_out
+Watch: After SUBB a set CY means borrow; after CJNE it means unsigned
+less-than.
+
+OPERANDS                          BYTES MC  FLAGS
+JC rel                             2    2  -
+
+JMP / FLOW
+----------------------------------------
+Set PC to DPTR plus unsigned A. This is the one hardware computed JMP
+form.
+
+Example: jmp @a+dptr
+Watch: A generic JMP label accepted by some assemblers is a
+pseudo-instruction, not an additional CPU opcode. A jump table must
+contain executable jump entries or code at the computed address.
+
+OPERANDS                          BYTES MC  FLAGS
+JMP @A+DPTR                        1    2  -
+
+JNB / FLOW
+----------------------------------------
+Branch when the addressed bit is zero without modifying it.
+
+Example: jnb 0x99,wait_tx
+Watch: TI is bit address 99; direct byte address 99 is the different SBUF
+register.
+
+OPERANDS                          BYTES MC  FLAGS
+JNB bit,rel                        3    2  -
+
+JNC / FLOW
+----------------------------------------
+Branch when CY is zero.
+
+Example: jnc no_borrow
+Watch: No-borrow is unsigned greater-or-equal after a properly initialized
+SUBB.
+
+OPERANDS                          BYTES MC  FLAGS
+JNC rel                            2    2  -
+
+JNZ / FLOW
+----------------------------------------
+Branch when A is not zero; no separate zero flag is consulted.
+
+Example: jnz nonzero
+Watch: An INC R7 followed by JNZ still tests A, not R7.
+
+OPERANDS                          BYTES MC  FLAGS
+JNZ rel                            2    2  -
+
+JZ / FLOW
+----------------------------------------
+Branch when A is zero.
+
+Example: jz empty
+Watch: The branch neither clears A nor modifies carry.
+
+OPERANDS                          BYTES MC  FLAGS
+JZ rel                             2    2  -
+
+LCALL / FLOW
+----------------------------------------
+Push the return PC and call any address in the 64-KiB CODE space.
+
+Example: lcall worker
+Watch: The stack is internal RAM. Budget two return-address bytes plus
+software saves and nesting.
+
+OPERANDS                          BYTES MC  FLAGS
+LCALL addr16                       3    2  -
+
+LJMP / FLOW
+----------------------------------------
+Replace PC with a full 16-bit CODE address.
+
+Example: ljmp destination
+Watch: No bank switching or external memory decoding is created by the
+instruction.
+
+OPERANDS                          BYTES MC  FLAGS
+LJMP addr16                        3    2  -
+
+[ DOS/51 FIELD MANUAL | IMANIA.DK | 2026-11-14 ]

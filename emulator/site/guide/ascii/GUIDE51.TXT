@@ -1,0 +1,46 @@
++------------------------------------------------------------------------+
+|                IMANIA // FIELD ARCHIVE 8051 // VOL. 01                 |
++------------------------------------------------------------------------+
+
+                     _____   ___   _____ _
+                    |  _  | / _ \ |  ___/ |
+                    | |_| || | | ||___ \ |
+                    |  _  || |_| | ___) | |
+                    |_| |_| \___/ |____/|_|
+
+                THE ULTIMATE 8051 ASSEMBLY GUIDE
+                      DOS/51 FIELD EDITION
+
+       44 mnemonics / 111 forms / 255 defined opcode bytes
+       Classic MCS-51 + Philips P80C31SFPN hardware notes
+
+01 START51.TXT  Start here; first DOS/51 program
+02 MEM51.TXT    Memory spaces, addressing, flags and stack
+03 INST1.TXT    Instruction reference: ACALL through LJMP
+   INST2.TXT    Instruction reference: MOV through XRL
+04 CODE51.TXT   Loops, arithmetic, BCD, tables and contracts
+05 CHIP51.TXT   Stocked chip, PDIP pinout, bus and power
+06 IO51.TXT     Timer 0/1, UART, interrupt programming
+07 PHIL51.TXT   Philips extensions; not emulator features
+08 DOS51.TXT    Board map, SD card, lab and troubleshooting
+
+READ ONE CHAPTER AT A TIME:
+    sdget start51.txt
+    cat start51.txt
+    rm start51.txt
+
+The last command removes the RAM-disk copy, NOT the SD original.
+The RAM disk is 24 KiB. These files are deliberately split to fit.
+Keep your own work; never blank the card just to install the guide.
+
+WEB EDITION / SEARCH / OPCODE MAP:
+https://www.imania.dk/dos51/guide/
+
+Sources: Intel MCS-51 Family User's Manual (instruction set);
+Philips 80C31/80C32 product specification, 7 August 2000;
+DOS/51 firmware and emulator source in the ABN8051 repository.
+Philips extensions are documented separately; the current emulator
+implements the classic core. Physical stocked silicon is not bench-
+verified for later-revision extensions. See PHIL51.TXT for scope.
+
+[ DOS/51 FIELD MANUAL | IMANIA.DK | 2026-11-14 ]

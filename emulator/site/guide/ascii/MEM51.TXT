@@ -1,0 +1,91 @@
++------------------------------------------------------------------------+
+|                   02 / Memory, addressing and flags                    |
++------------------------------------------------------------------------+
+
+THREE SPACES, ONE NUMBER
+CODE is up to 64 KiB of program memory, fetched by PC and read as data
+with MOVC. XDATA is a separate, up-to-64-KiB external data space accessed
+with MOVX. Internal DATA contains the CPU's small RAM and its directly
+addressed special function registers. Thus MOV A,0x30, MOVC A,@A+DPTR and
+MOVX A,@DPTR can read three different physical places even if the
+numerical address is the same.
+
+INTERNAL MAP (128-byte 80C31)
+00-07  register bank 0 (reset default)
+08-0F  register bank 1
+10-17  register bank 2
+18-1F  register bank 3
+20-2F  16 bytes / 128 individually addressable RAM bits
+30-7F  general RAM and stack, allocated by your program
+80-FF  directly addressed SFRs, NOT another 128 RAM bytes
+
+PSW.RS1:RS0 selects the register bank. R3 means the third numbered
+register in the CURRENT bank, not invariably address 03. Internal indirect
+MOV A,@R0 and MOV @R1,A use RAM only; on an 80C31 there is no upper 80-FF
+internal RAM. Never use an indirect pointer above 7F as an SFR shortcut.
+An 80C32's extra RAM is a different device feature.
+
+Addressing examples:
+    mov a,#0x30      ; A = literal 48
+    mov a,0x30       ; A = RAM byte at 30
+    mov r0,#0x30
+    mov a,@r0        ; same RAM byte, indirect
+    mov dptr,#0x1234
+    movx a,@dptr     ; external DATA byte at 1234
+    clr a
+    movc a,@a+dptr   ; CODE byte at 1234
+
+MOVX through @R0/@R1 uses an 8-bit low address; classic external hardware
+uses P2's latch for the high address. MOVX @DPTR uses all 16 address bits.
+Neither is the same as ordinary MOV @Ri. MOVC uses A as an unsigned index;
+the @A+PC base is PC AFTER the MOVC opcode. JMP @A+DPTR also uses an
+unsigned byte offset, not a table of pointers automatically dereferenced
+by hardware.
+
+BIT MEMORY
+Bit addresses 00-7F map to bytes 20-2F: byte = 20 + (bit_address / 8), bit
+= bit_address modulo 8. Bit 00 is RAM 20.0; bit 7F is RAM 2F.7. Bit
+addresses 80-FF select implemented bit-addressable SFRs whose BYTE address
+is divisible by eight. Not every SFR supports bit operations: TMOD at 89
+does not. Bit address 89 is TCON.1, not TMOD. Use ANL/ORL on a whole byte
+for non-bit-addressable registers.
+
+FLAGS: PSW = CY AC F0 RS1 RS0 OV user P
+CY is carry for addition and borrow for SUBB. AC is carry/borrow across
+bit 3. OV signals signed arithmetic overflow. P is maintained from A: 1
+for an odd number of set bits. F0 is a software flag. The classic CPU has
+NO zero or negative flag; JZ/JNZ inspect A itself. INC and DEC do not
+update CY or OV. They still affect P if they change A.
+
+For unsigned comparison, CJNE sets CY when its first unsigned operand is
+less than the second. For signed comparison you must account for
+sign/overflow yourself. Example: 0x7F + 1 becomes 0x80 with OV=1 but CY=0.
+Conversely 0xFF + 1 becomes 0 with CY=1 but OV=0.
+
+16-BIT ADD / SUBTRACT
+    mov a,0x30       ; low byte of left operand
+    add a,0x32       ; low byte of right operand
+    mov 0x34,a
+    mov a,0x31
+    addc a,0x33
+    mov 0x35,a       ; final CY is the 16-bit carry
+
+For subtraction start with CLR C and use SUBB on both low and high bytes.
+A plain SUB instruction does not exist.
+
+STACK
+Reset sets SP=07; a PUSH first increments SP, then writes. CALL pushes the
+return address low byte first, then high; RET reverses that sequence. A
+bare-metal MOV SP,#0x5F makes the first pushed byte land at 60, leaving 32
+bytes through 7F. Reserve that area and check worst-case calls plus
+interrupt nesting. The stack does not automatically grow into external
+RAM. PUSH/POP accept direct byte addresses, not immediate data or an Rn
+operand. PUSH 0x00 saves bank-0 R0, not necessarily the current bank's R0.
+
+PORT READS
+MOV A,P1 reads pins. Read-modify-write instructions with a port
+destination (ANL P1,#mask, ORL P1,#mask, CPL P1.0 and friends) use the
+output latch. That matters when external circuitry pulls a released input
+low. Use masked or bit writes so unrelated outputs survive.
+
+[ DOS/51 FIELD MANUAL | IMANIA.DK | 2026-11-14 ]
