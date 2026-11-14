@@ -3,6 +3,7 @@ import { Board } from './emu/board.js';
 import { SDCard } from './emu/sdcard.js';
 import { formatCard } from './emu/fatfmt.js';
 import { putFat16File } from './emu/fatfile.js';
+import { installGuideFile } from './emu/guidefiles.js';
 
 const STATE_KEY = 'dos51.ram.v1';
 const $ = (id) => document.getElementById(id);
@@ -30,12 +31,12 @@ const dropBlocksSource = new Uint8Array(await fetch('dropblk.asm').then((r) => {
   return r.arrayBuffer();
 }));
 // The field manual is fetched once; installing never replaces a visitor's files.
-const guideManifest = await fetch('guide/manifest.json?v=20261114').then(r => {
+const guideManifest = await fetch('guide/manifest.json?v=20261114lf').then(r => {
   if (!r.ok) throw new Error(`Guide manifest fetch failed: ${r.status}`);
   return r.json();
 });
 const guideFiles = await Promise.all(guideManifest.map(async ({ name }) => {
-  const r = await fetch(`guide/ascii/${name}?v=20261114`);
+  const r = await fetch(`guide/ascii/${name}?v=20261114lf`);
   if (!r.ok) throw new Error(`Guide chapter fetch failed: ${r.status}`);
   return { name, data: new Uint8Array(await r.arrayBuffer()) };
 }));
@@ -208,15 +209,17 @@ $('guideinstall').onclick = () => {
   try {
     const candidate = card.image.slice();
     const ranges = [];
-    let added = 0;
+    let added = 0, repaired = 0;
     for (const file of guideFiles) {
-      if (putFat16File(candidate, file.name, file.data, (off, len) => ranges.push([off, len]))) added++;
+      const result = installGuideFile(candidate, file.name, file.data, (off, len) => ranges.push([off, len]));
+      if (result === 'added') added++;
+      if (result === 'repaired') repaired++;
     }
     card.image.set(candidate);
     for (const [off, len] of ranges) card.onWrite(off, len);
-    $('guidestatus').textContent = added ? `${added} manual files installed. Type sdget guide51.txt, then cat guide51.txt.` :
+    $('guidestatus').textContent = repaired ? `${repaired} original manual files repaired. Remove the old RAM copy (rm guide51.txt), then sdget guide51.txt again. Your edited files were preserved.` : added ? `${added} manual files installed. Type sdget guide51.txt, then cat guide51.txt.` :
       'Field manual already present. Existing files were not overwritten.';
-    term.write(`\r\n[FIELD ARCHIVE / ${added} files added / existing files preserved]\r\n[sdget guide51.txt  then  cat guide51.txt]\r\n`);
+    term.write(`\r\n[FIELD ARCHIVE / ${added} files added / ${repaired} repaired / your files preserved]\r\n[sdget guide51.txt  then  cat guide51.txt]\r\n`);
   } catch (e) {
     $('guidestatus').textContent = `${e.message}. Card unchanged. Download the ASCII ZIP for other cards.`;
   }

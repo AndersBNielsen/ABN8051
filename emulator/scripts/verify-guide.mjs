@@ -37,6 +37,12 @@ await page.screenshot({path:'/tmp/guide-emulator-desktop.png',fullPage:true});
 const send=async s=>{await page.locator('#term').click();await page.keyboard.type(s,{delay:8});};
 await send('sdget guide51.txt\rcat guide51.txt\r');
 await page.waitForFunction(()=>document.querySelector('.xterm-rows')?.innerText.includes('FIELD ARCHIVE'),{timeout:30000});
+await send('nano guide51.txt\r');
+await page.waitForFunction(()=>document.querySelector('.xterm-rows')?.innerText.includes('DOS/51 nano'),{timeout:10000});
+await page.waitForTimeout(400);
+assert.ok(!await page.locator('.xterm-rows').innerText().then(t=>t.includes('?')),'manual editor has no CR question marks');
+await page.screenshot({path:'/tmp/guide-nano-fixed.png'});
+await page.keyboard.press('Control+x');
 // A blank visitor card acquires missing manual files without losing MYWORK.TXT.
 page.on('dialog',d=>d.accept());
 await page.click('#cardnew');

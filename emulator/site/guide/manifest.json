@@ -1,42 +1,42 @@
 [
   {
     "name": "CHIP51.TXT",
-    "bytes": 4756
+    "bytes": 4664
   },
   {
     "name": "CODE51.TXT",
-    "bytes": 3521
+    "bytes": 3427
   },
   {
     "name": "DOS51.TXT",
-    "bytes": 4709
+    "bytes": 4616
   },
   {
     "name": "GUIDE51.TXT",
-    "bytes": 2011
+    "bytes": 1965
   },
   {
     "name": "INST1.TXT",
-    "bytes": 9971
+    "bytes": 9673
   },
   {
     "name": "INST2.TXT",
-    "bytes": 9796
+    "bytes": 9512
   },
   {
     "name": "IO51.TXT",
-    "bytes": 5293
+    "bytes": 5186
   },
   {
     "name": "MEM51.TXT",
-    "bytes": 4287
+    "bytes": 4196
   },
   {
     "name": "PHIL51.TXT",
-    "bytes": 5180
+    "bytes": 5087
   },
   {
     "name": "START51.TXT",
-    "bytes": 2952
+    "bytes": 2895
   }
 ]

@@ -29,7 +29,7 @@ def textfile(name,title,body):
   else:lines.extend(textwrap.wrap(line,74,break_long_words=False,break_on_hyphens=False) or [''])
  content=banner+'\n'+'\n'.join(lines)+'\n\n[ DOS/51 FIELD MANUAL | IMANIA.DK | 2026-11-14 ]\n'
  content.encode('ascii');assert len(content)<19000,(name,len(content))
- (ascii_dir/name).write_bytes(content.replace('\n','\r\n').encode('ascii'))
+ (ascii_dir/name).write_bytes(content.encode('ascii'))
 for c in data['chapters']:textfile(c['file'],c['title'],c['text'])
 ref=[]
 for m,(cat,desc,example,note) in sorted(data['instructions'].items()):

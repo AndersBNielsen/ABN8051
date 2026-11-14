@@ -44,3 +44,23 @@ test('the first-program example assembles and returns through the real ROM',()=>
  assert.ok(upload(h,'first.asm',source).ok);
  assert.match(cmd(h,'asm -r first.asm',{timeout:120}),/0 error\(s\)[\s\S]*\*/);
 });
+
+test('manual installer repairs exact old CRLF editions but preserves user edits',async()=>{
+ const {installGuideFile}=await import('../emu/guidefiles.js');
+ const image=formatCard(16<<20);
+ const fresh=new Uint8Array(fs.readFileSync(new URL('../site/guide/ascii/GUIDE51.TXT',import.meta.url)));
+ assert.ok(!fresh.includes(13));
+ const old=new TextEncoder().encode(new TextDecoder().decode(fresh).replace(/\n/g,'\r\n'));
+ putFat16File(image,'GUIDE51.TXT',old);
+ putFat16File(image,'START51.TXT',new TextEncoder().encode('my edited chapter\n'));
+ assert.equal(installGuideFile(image,'GUIDE51.TXT',fresh),'repaired');
+ assert.equal(installGuideFile(image,'GUIDE51.TXT',fresh),'preserved');
+ const before=image.slice();
+ assert.equal(installGuideFile(image,'START51.TXT',fresh),'preserved');assert.deepEqual(image,before);
+ const h=createHarness({romPath:ROM_PATH,seed:1});new SDCard({image}).attach(h.board);
+ h.waitFor(PROMPT,{timeoutCycles:5*SEC});cmd(h,'sdget guide51.txt',{timeout:120});
+ const content=cmd(h,'cat guide51.txt',{timeout:120});assert.ok(content.includes('FIELD EDITION'));
+ h.send('nano guide51.txt\r');
+ const screen=h.waitFor('Loops, arithmetic, BCD, tables and contracts',{timeoutCycles:5*SEC});
+ assert.ok(!screen.replace(/\x1b\[[?0-9;]*[A-Za-z]/g,'').includes('?'), 'nano must not render carriage-return question marks');
+});

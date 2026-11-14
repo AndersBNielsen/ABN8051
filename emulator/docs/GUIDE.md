@@ -24,7 +24,7 @@ question is separate from this publishing task. WUPD is explicitly unavailable
 on 80C31 in that document. Do not mistake generic 8051 claims for exact-part
 verification.
 
-ASCII files use CRLF, only 7-bit bytes, 8.3 card filenames and <10 KB chapters.
+ASCII files use LF (DOS/51 nano renders literal CR as `?`), only 7-bit bytes, 8.3 card filenames and <10 KB chapters.
 FAT names are case-insensitive but the DOS/51 RAM disk is case-sensitive: show
 `sdget guide51.txt` followed by `cat guide51.txt` (lowercase local filename).
 Import one chapter at a time and remove its RAM copy when finished.
@@ -32,7 +32,9 @@ Import one chapter at a time and remove its RAM copy when finished.
 First-use cards are seeded; saved cards are never silently modified. The install
 button stages all files on a copy of the image before applying changed ranges,
 so a full or unsupported card fails without a partial installation. Existing
-same-named files and unrelated work are preserved. Browser FAT installer is
+same-named files and unrelated work are preserved. Exception: byte-identical
+original CRLF manual files are repaired to LF by `emu/guidefiles.js`; edited
+files are never replaced. RAM copies must be removed and re-imported. Browser FAT installer is
 FAT16-only even though the firmware reads FAT32 too.
 
 Verification:
