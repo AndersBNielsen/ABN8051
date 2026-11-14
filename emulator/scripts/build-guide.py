@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build the searchable web companion and RAM-disk-sized ASCII chapters."""
 from pathlib import Path
-import json,html,textwrap,zipfile
+import json,html,textwrap,zipfile,hashlib
 root=Path(__file__).resolve().parents[1]
 out=root/'site/guide'; data=json.loads((out/'content.json').read_text())
 ops=json.loads((out/'opcodes.json').read_text())
@@ -110,7 +110,9 @@ for c in data['chapters']:
  body=[]
  # Plain-text source is also the ASCII edition: keep web and card in sync.
  for para in c['text'].split('\n\n'):
-  if '\n' in para:body.append('<pre tabindex="0">'+e(para)+'</pre>')
+  if '\n' in para:
+   aligned = para.startswith(('INTERNAL MAP', 'RS1 RS0', 'BASELINE SFR', 'BOARD MAP', 'PDIP-40 PIN MAP'))
+   body.append('<pre'+(' class="aligned"' if aligned else '')+' tabindex="0">'+e(para)+'</pre>')
   else:body.append('<p>'+e(para)+'</p>')
  parts.append(f'<section id="{c["id"]}"><p class="kicker">FIELD NOTES / {e(c["file"])}</p><h2>{e(c["title"])}</h2>'+''.join(body)+f'<a class="download" href="ascii/{c["file"]}" download>↓ {e(c["file"])} · ASCII</a></section>')
 maprows=[]
@@ -129,5 +131,8 @@ INST2.TXT     MOV   → XRL
 CHIP51.TXT    THE REAL CHIP
 
 &gt; KNOWLEDGE, NOT JUST STORAGE_</pre><a href="8051-field-manual.zip" download>↓ Download the complete ASCII edition</a><p>Included on new emulator SD cards. Existing card? Use <b>Install field manual</b> in DOS/51. Your files stay yours.</p></aside></div><div class="book"><nav aria-label="Guide chapters"><p class="kicker">CONTENTS</p>'''+nav+'''<a href="#opcodes">09 / Opcode map</a><a href="#sources">10 / Sources & scope</a></nav><div class="chapters">'''+''.join(parts)+opmap+f'''<section id="sources"><p class="kicker">10 / PRIMARY SOURCES & SCOPE</p><h2>Know which machine you mean.</h2><p>Written for the <a href="{product}">Philips P80C31SFPN stocked at iMania</a>, with standard instruction semantics checked against Intel’s original instruction descriptions. This is an independently written teaching guide, not a reproduction of a manufacturer manual. Hardware extensions are attributed to the dated Philips specification and separated from emulator support; no physical chip bench-validation is claimed.</p><ul><li><a href="https://www.rsp-italy.it/Electronics/uP/_contents/Intel/8051/8051%20Instruction%20Manual.pdf">Intel MCS-51 Family User’s Manual — architecture, instruction descriptions and encoding/timing tables</a></li><li><a href="https://www.keil.com/support/man/docs/is51/is51_instructions.asp">Arm/Keil 8051 instruction-set reference</a></li><li><a href="https://www.keil.com/dd/docs/datashts/philips/8xc5x_ds.pdf">Philips 80C31/80C32 specification, 7 August 2000 — ordering p.3, pinout p.5, SFRs p.7, timer/UART/priority/DPTR sections</a></li><li><a href="https://github.com/AndersBNielsen/ABN8051/tree/main/emulator">ABN8051 emulator and DOS/51 firmware source</a> — board mapping, supported SFRs, shell commands and assembler</li></ul><p>Edition 2026-11-14. Classic CPU timings are hardware reference values; browser speed and modeled peripheral coverage are separate matters. The Philips shared-family datasheet contains revision-sensitive extensions: see chapter 07 instead of assuming every generic 8051, emulator or old 80C31 has them.</p><a class="button" href="../">Back to the machine →</a></section></div></div></main><footer>IMANIA / THE ULTIMATE 8051 ASSEMBLY GUIDE <a href="#">↑ Back to top</a></footer><script src="guide.js"></script></body></html>'''
+for asset in ['guide.css','guide.js']:
+ digest=hashlib.sha256((out/asset).read_bytes()).hexdigest()[:10]
+ page=page.replace(asset+'"',asset+'?v='+digest+'"')
 (out/'index.html').write_text(page)
 print(f'Built guide: {len(forms)} forms, {len(ops)-1} defined opcode bytes, {len(manifest)} ASCII files, {sum(x["bytes"] for x in manifest)} bytes')
