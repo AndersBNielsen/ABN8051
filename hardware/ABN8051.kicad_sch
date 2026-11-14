@@ -3016,6 +3016,197 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "ABN8051:MIC5504-3.3YM5"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "U"
+				(at -7.62 8.89 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "MIC5504-3.3YM5"
+				(at -7.62 6.35 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" "Package_TO_SOT_SMD:SOT-23-5"
+				(at 0 -10.16 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" "http://ww1.microchip.com/downloads/en/DeviceDoc/MIC550X.pdf"
+				(at -6.35 6.35 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "300 mA LDO 3.3 V, SOT-23-5: 1 VIN, 2 GND, 3 EN, 4 NC, 5 VOUT. VOUT is passive here because this part is an alternative to U9 on the same rail"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "Micrel LDO voltage regulator"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "SOT?23?5*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "MIC5504-3.3YM5_0_1"
+				(rectangle
+					(start -7.62 -5.08)
+					(end 7.62 5.08)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "MIC5504-3.3YM5_1_1"
+				(pin power_in line
+					(at -10.16 2.54 0)
+					(length 2.54)
+					(name "VIN"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 0 -7.62 90)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -10.16 -2.54 0)
+					(length 2.54)
+					(name "EN"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin no_connect line
+					(at 7.62 -2.54 180)
+					(length 2.54)
+					(hide yes)
+					(name "NC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 10.16 2.54 180)
+					(length 2.54)
+					(name "VOUT"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "ABN8051:SN74ALS873B"
 			(pin_names
 				(offset 1.016)
@@ -11963,6 +12154,17 @@
 		)
 		(uuid "0e7063de-d894-56b4-abad-44a78aba012f")
 	)
+	(text "U11 (MIC5504) is an alternative to U9: fit only one of them.\nWith U11, C18 must be a 10 uF 1206 MLCC, not the tantalum."
+		(exclude_from_sim no)
+		(at 180.34 245 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "15887c86-7d27-5297-a089-53274761182a")
+	)
 	(text "SW1: any 2.54 mm pitch slide switch,\nor solder a wire link 1-2."
 		(exclude_from_sim no)
 		(at 91.44 223.52 0)
@@ -11999,7 +12201,7 @@
 	)
 	(text "JP6 open by default: card\ndetect to T0, low = card in"
 		(exclude_from_sim no)
-		(at 270.51 234.442 0)
+		(at 270.51 223.012 0)
 		(effects
 			(font
 				(size 1 1)
@@ -14731,6 +14933,16 @@
 			(type default)
 		)
 		(uuid "a478f5b5-f787-52f1-a5a1-fce723e2b7e6")
+	)
+	(wire
+		(pts
+			(xy 269.24 233.68) (xy 269.24 228.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a4bf5308-3d78-5dd9-beae-a9b230fdfa2d")
 	)
 	(wire
 		(pts
@@ -19207,6 +19419,84 @@
 			(project "ABN8051"
 				(path "/c4aa6565-7ffd-537e-9867-5f09f1b63b1d"
 					(reference "R4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 289.56 228.6 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "039213ed-4047-5390-83c1-3c56d1912c22")
+		(property "Reference" "#PWR103"
+			(at 289.56 228.6 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 293.16 228.6 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 289.56 228.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 289.56 228.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 289.56 228.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "2b27862a-82dd-58f3-98d8-a254dea41b23")
+		)
+		(instances
+			(project "ABN8051"
+				(path "/c4aa6565-7ffd-537e-9867-5f09f1b63b1d"
+					(reference "#PWR103")
 					(unit 1)
 				)
 			)
@@ -25084,6 +25374,118 @@
 		)
 	)
 	(symbol
+		(lib_id "ABN8051:MIC5504-3.3YM5")
+		(at 279.4 231.14 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp yes)
+		(uuid "57c3020d-4d0e-59e7-9e8f-bccda0543630")
+		(property "Reference" "U11"
+			(at 271.78 224.54 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MIC5504-3.3YM5"
+			(at 276.86 224.54 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_SMD:SOT-23-5"
+			(at 279.4 231.14 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "http://ww1.microchip.com/downloads/en/DeviceDoc/MIC550X.pdf"
+			(at 279.4 231.14 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "300 mA LDO 3.3 V, SOT-23-5: 1 VIN, 2 GND, 3 EN, 4 NC, 5 VOUT. VOUT is passive here because this part is an alternative to U9 on the same rail"
+			(at 279.4 231.14 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C3021093"
+			(at 279.4 231.14 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Alt" "Alternative to U9: fit U9 or U11, never both"
+			(at 279.4 231.14 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "75eb8787-8d1e-51f4-a452-b4077430b6ba")
+		)
+		(pin "2"
+			(uuid "1e40b1f1-082b-5ba5-b1d8-6496da01f6ff")
+		)
+		(pin "3"
+			(uuid "495be473-ed87-5949-8ccb-12516515a5ee")
+		)
+		(pin "4"
+			(uuid "451618ff-510e-52f3-aa9a-4cb479936044")
+		)
+		(pin "5"
+			(uuid "f40d9e42-eef6-5d4f-84a2-6c380059cd4c")
+		)
+		(instances
+			(project "ABN8051"
+				(path "/c4aa6565-7ffd-537e-9867-5f09f1b63b1d"
+					(reference "U11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 325.12 167.64 90)
 		(unit 1)
@@ -27352,6 +27754,84 @@
 			(project "ABN8051"
 				(path "/c4aa6565-7ffd-537e-9867-5f09f1b63b1d"
 					(reference "#PWR058")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 279.4 238.76 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "7a10c532-a55b-59da-b862-b0e9efb62991")
+		(property "Reference" "#PWR104"
+			(at 279.4 238.76 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 284.6 238.76 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 279.4 238.76 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 279.4 238.76 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 279.4 238.76 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "80973003-2221-5301-9bf0-98f42ec56407")
+		)
+		(instances
+			(project "ABN8051"
+				(path "/c4aa6565-7ffd-537e-9867-5f09f1b63b1d"
+					(reference "#PWR104")
 					(unit 1)
 				)
 			)
@@ -32475,6 +32955,17 @@
 				)
 			)
 		)
+		(property "Alt" "With U11: 10uF 1206 MLCC (LCSC C13585)"
+			(at 195.58 224.79 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "3c6ea458-9c2f-5bc8-b8f7-fee1e5c74338")
 		)
@@ -32789,6 +33280,84 @@
 			(project "ABN8051"
 				(path "/c4aa6565-7ffd-537e-9867-5f09f1b63b1d"
 					(reference "#PWR076")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+5V")
+		(at 269.24 228.6 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "d2b1d16e-5abc-5c58-83bf-bdab4db6b218")
+		(property "Reference" "#PWR102"
+			(at 269.24 228.6 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+5V"
+			(at 265.64 228.6 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 269.24 228.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 269.24 228.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+5V\""
+			(at 269.24 228.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "3e34f4b8-7506-5f49-81a5-621ce2dc41fc")
+		)
+		(instances
+			(project "ABN8051"
+				(path "/c4aa6565-7ffd-537e-9867-5f09f1b63b1d"
+					(reference "#PWR102")
 					(unit 1)
 				)
 			)
@@ -35032,7 +35601,7 @@
 				)
 			)
 		)
-		(property "Value" "100nF"
+		(property "Value" "1uF"
 			(at 195.58 218.8 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -35075,7 +35644,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C49678"
+		(property "LCSC" "C28323"
 			(at 195.58 215.9 0)
 			(hide yes)
 			(show_name no)

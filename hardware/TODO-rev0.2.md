@@ -10,7 +10,7 @@
 - Skills: read `~/.openclaw/agents/main/agent/workshop-skills/pcb-routing-validation/SKILL.md` (and its references) first.
 
 ## Steps
-- [ ] 1. **MIC5504-3.3YM5 alternate to U9 (KF33BD, SO-8).** SOT-23-5, LCSC C3021093 (used on 65uino). Confirm the pinout from the Microchip datasheet (expected 1 VIN, 2 GND, 3 EN, 4 NC, 5 VOUT). Add as a separate DNP-able footprint (e.g. U11) sharing +5V/GND/+3V3; EN to VIN (or +5V). Place it adjacent to/overlapping U9 so either can be fitted; mark mutually exclusive in silk ("fit U9 or U11"). Check output-cap requirements for both (KF33 needs ESR 0.1–10 Ω tantalum; MIC5504 is MLCC-stable, 1 µF).
+- [x] 1. **MIC5504-3.3YM5 alternate to U9 (KF33BD, SO-8).** SOT-23-5, LCSC C3021093 (used on 65uino). Confirm the pinout from the Microchip datasheet (expected 1 VIN, 2 GND, 3 EN, 4 NC, 5 VOUT). Add as a separate DNP-able footprint (e.g. U11) sharing +5V/GND/+3V3; EN to VIN (or +5V). Place it adjacent to/overlapping U9 so either can be fitted; mark mutually exclusive in silk ("fit U9 or U11"). Check output-cap requirements for both (KF33 needs ESR 0.1–10 Ω tantalum; MIC5504 is MLCC-stable, 1 µF).
 - [ ] 2. **Narrow DIP-28 (7.62 mm) for U4/U5 SRAMs**, overlapping the wide 15.24 mm footprint, same pin-1 position, both electrically identical (e.g. add U4N/U5N as DNP alternates on the same nets, or one combined footprint). Board must pass DRC with the overlap intentional (document any intentional courtyard exclusions). Silk: "300/600 mil".
 - [ ] 3. **FC-003D-5.0 3×6 mm SMD tactile switch** (iMania product 7342, 1500 in stock; check its datasheet/land pattern and pin connection) as alternate for SW2/SW3/SW4 (TL3342 now), overlapping footprints, both wired correctly. Silk indicates.
 - [ ] 4. **Move solder jumpers JP2–JP6 to the bottom (B.Cu)** next to the back-silk legend that describes them; update the back-silk text so each jumper is labelled where it sits. JP1 (ROM pin-1 header) stays a top-side 3-pin header unless there is a clear reason.
@@ -19,3 +19,4 @@
 
 ## Progress log
 (append one line per session: date/time, steps done, commit hash, anything blocked)
+- 2026-11-14 00:25 run (Fable): step 1 implemented (U11 MIC5504 DNP on +5V/GND/+3V3, EN=VIN; C20 -> 1 uF; C18 Alt field for MLCC with U11; silk/back-silk notes) but the run stopped before committing. 05:30 (Opus): verified pinout vs KiCad lib/65uino, ERC 0, DRC 0, parity 81 = baseline (all pre-existing Description/BOM-attribute field mismatches), unconnected 324 -> 328 (U11 pads). Committed.
