@@ -10,7 +10,7 @@ flags={'ADD':'CY AC OV','ADDC':'CY AC OV','SUBB':'CY AC OV','MUL':'CY=0 OV','DIV
 def flag(m,form):
  if form.startswith(('ANL C,','ORL C,','MOV C,','CLR C','CPL C','SETB C')):return 'CY'
  return flags.get(m,'—')
-# Combine encoded register numbers / 2-KiB page selectors into operand forms.
+# Combine encoded register numbers / 2-KB page selectors into operand forms.
 forms={}
 for op in ops:
  if op['op']==165:continue
@@ -70,7 +70,7 @@ READ ONE CHAPTER AT A TIME:
     rm start51.txt
 
 The last command removes the RAM-disk copy, NOT the SD original.
-The RAM disk is 24 KiB. These files are deliberately split to fit.
+The RAM disk is 24 KB. These files are deliberately split to fit.
 Keep your own work; never blank the card just to install the guide.
 
 WEB EDITION / SEARCH / OPCODE MAP:
@@ -84,7 +84,8 @@ implements the classic core. Physical stocked silicon is not bench-
 verified for later-revision extensions. See PHIL51.TXT for scope.
 '''
 textfile('GUIDE51.TXT','IMANIA // FIELD ARCHIVE 8051 // VOL. 01',index)
-manifest=[{'name':p.name,'bytes':p.stat().st_size} for p in sorted(ascii_dir.glob('*.TXT'))]
+legacy=json.loads((out/'legacy.json').read_text()) if (out/'legacy.json').exists() else {}
+manifest=[{'name':p.name,'bytes':p.stat().st_size,**({'legacy':legacy[p.name]} if p.name in legacy else {})} for p in sorted(ascii_dir.glob('*.TXT'))]
 (out/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
 with zipfile.ZipFile(out/'8051-field-manual.zip','w',zipfile.ZIP_DEFLATED) as z:
  for p in sorted(ascii_dir.glob('*.TXT')):
@@ -105,7 +106,7 @@ for c in data['chapters']:
     r=rr[0];opstr=', '.join(f'{q["op"]:02X}' for q in rr)
     rows.append(f'<tr><td><code>{e(f)}</code></td><td>{opstr}</td><td>{r["bytes"]}</td><td>{r["cycles"]}</td><td>{flag(m,f)}</td></tr>')
    cards.append(f'<article class="instruction" id="ins-{m.lower()}" data-category="{cat}"><header><h3>{m}</h3><span>{cat}</span></header><p>{e(desc)}</p><div class="tablewrap"><table><thead><tr><th>Operand form</th><th>Opcode(s), hex</th><th>Bytes</th><th>MC</th><th>Flags</th></tr></thead><tbody>{"".join(rows)}</tbody></table></div><pre><code>{e(example)}</code></pre><p class="watch"><b>Watch:</b> {e(note)}</p></article>')
-  parts.append('<section id="instructions"><p class="kicker">03 / THE COMPLETE DESK REFERENCE</p><h2>Every standard instruction.</h2><p>All 111 operand forms, all 255 defined opcode bytes. <b>Rn</b> = R0–R7; <b>@Ri</b> = @R0 or @R1; <b>dir</b> = direct byte address; <b>#imm</b> = immediate byte; <b>rel</b> = signed displacement from the next instruction; <b>addr11</b> = same-2-KiB-page target; <b>addr16</b> = full CODE address. Commas separate opcodes within a form, not bytes of one encoding. Multi-byte operands follow the opcode; MOV dir,dir encodes source then destination. Full addresses/immediate words are high byte then low byte; stack PC pushes are low then high.</p><p>MC means classic 12-clock machine cycles. Flag columns list arithmetic/Boolean effects, not every possible destination side effect. Parity P follows A automatically; writes to PSW or its bits can explicitly alter flags. All conditional branches cost two MC whether taken or not. Reserved A5 has no portable behavior.</p><div class="filters"><label for="search">Find an instruction or operand</label><input id="search" type="search" placeholder="Try MOVX, carry, @Ri, stack…"><label for="category">Group</label><select id="category"><option value="all">All instructions</option>'+''.join(f'<option>{v}</option>' for v in ['arithmetic','bits','data','flow','logic'])+'</select><p id="results" aria-live="polite">44 mnemonics · 111 operand forms</p></div><div class="instruction-grid">'+''.join(cards)+'</div><noscript>All instruction entries remain visible without JavaScript.</noscript></section>')
+  parts.append('<section id="instructions"><p class="kicker">03 / THE COMPLETE DESK REFERENCE</p><h2>Every standard instruction.</h2><p>All 111 operand forms, all 255 defined opcode bytes. <b>Rn</b> = R0–R7; <b>@Ri</b> = @R0 or @R1; <b>dir</b> = direct byte address; <b>#imm</b> = immediate byte; <b>rel</b> = signed displacement from the next instruction; <b>addr11</b> = same-2-KB-page target; <b>addr16</b> = full CODE address. Commas separate opcodes within a form, not bytes of one encoding. Multi-byte operands follow the opcode; MOV dir,dir encodes source then destination. Full addresses/immediate words are high byte then low byte; stack PC pushes are low then high.</p><p>MC means classic 12-clock machine cycles. Flag columns list arithmetic/Boolean effects, not every possible destination side effect. Parity P follows A automatically; writes to PSW or its bits can explicitly alter flags. All conditional branches cost two MC whether taken or not. Reserved A5 has no portable behavior.</p><div class="filters"><label for="search">Find an instruction or operand</label><input id="search" type="search" placeholder="Try MOVX, carry, @Ri, stack…"><label for="category">Group</label><select id="category"><option value="all">All instructions</option>'+''.join(f'<option>{v}</option>' for v in ['arithmetic','bits','data','flow','logic'])+'</select><p id="results" aria-live="polite">44 mnemonics · 111 operand forms</p></div><div class="instruction-grid">'+''.join(cards)+'</div><noscript>All instruction entries remain visible without JavaScript.</noscript></section>')
  body=[]
  # Plain-text source is also the ASCII edition: keep web and card in sync.
  for para in c['text'].split('\n\n'):

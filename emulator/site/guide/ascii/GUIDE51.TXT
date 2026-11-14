@@ -30,7 +30,7 @@ READ ONE CHAPTER AT A TIME:
     rm start51.txt
 
 The last command removes the RAM-disk copy, NOT the SD original.
-The RAM disk is 24 KiB. These files are deliberately split to fit.
+The RAM disk is 24 KB. These files are deliberately split to fit.
 Keep your own work; never blank the card just to install the guide.
 
 WEB EDITION / SEARCH / OPCODE MAP:

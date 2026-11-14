@@ -3,9 +3,9 @@
 +------------------------------------------------------------------------+
 
 THREE SPACES, ONE NUMBER
-CODE is up to 64 KiB of program memory, fetched by PC and read as data
-with MOVC. XDATA is a separate, up-to-64-KiB external data space accessed
-with MOVX. Internal DATA contains the CPU's small RAM and its directly
+CODE is up to 64 KB of program memory, fetched by PC and read as data with
+MOVC. XDATA is a separate, up-to-64-KB external data space accessed with
+MOVX. Internal DATA contains the CPU's small RAM and its directly
 addressed special function registers. Thus MOV A,0x30, MOVC A,@A+DPTR and
 MOVX A,@DPTR can read three different physical places even if the
 numerical address is the same.

@@ -51,7 +51,7 @@
   <aside class="sidebar">
     <section class="panel">
       <h2>Machine</h2>
-      <div class="stats"><span>CPU</span><strong>80C31 · 11.0592 MHz</strong><span>ROM</span><strong>32 KiB DOS/51 firmware</strong><span>RAM</span><strong>2 × 32 KiB</strong><span>Console</span><strong>VT100 · 80 × 24</strong></div>
+      <div class="stats"><span>CPU</span><strong>80C31 · 11.0592 MHz</strong><span>ROM</span><strong>32 KB DOS/51 firmware</strong><span>RAM</span><strong>2 × 32 KB</strong><span>Console</span><strong>VT100 · 80 × 24</strong></div>
       <div class="actions">
         <button id="reset" type="button" title="Press the reset button. RAM (and the RAM disk) survives.">Reset</button>
         <button id="power" type="button" title="Power-cycle the board. RAM is lost and the RAM disk is reformatted.">Power cycle</button>
@@ -62,7 +62,7 @@
     </section>
     <section class="panel">
       <h2>SD card <span class="card-badge">FIELD ARCHIVE / 01</span></h2>
-      <p>The board has an SD card on P1.4–P1.7 (SPI). Here it is a 16 MiB FAT16 image stored in your browser. Card files use 8.3 names in the root directory.</p>
+      <p>The board has an SD card on P1.4–P1.7 (SPI). Here it is a 16 MB FAT16 image stored in your browser. Card files use 8.3 names in the root directory.</p>
       <a class="field-card" href="guide/">
         <span class="field-chip" aria-hidden="true"><b>8051</b><i>ASCII / VOL.01</i><em>▌▌▌▌▌▌▌▌</em></span>
         <span><small>THE ULTIMATE</small><strong>8051 Assembly Guide</strong><span>44 mnemonics. Every standard instruction.<br>Read online or carry the ASCII field edition.</span><b>Open the field manual ↗</b></span>
@@ -76,7 +76,7 @@
         <button id="cardnew" type="button" title="Replace the virtual SD card with a blank FAT16 card">Blank card</button>
       </div>
       <input id="cardfile" type="file" accept=".img,.bin,.ima,application/octet-stream" hidden>
-      <small>Your first card includes <code>dropblk.asm</code>. Existing cards are unchanged until you click Add DropBlocks (FAT16). <a href="dropblk.asm" download>Download source</a> for other cards or a real board. Insert card… accepts FAT16/FAT32 images up to 256 MiB.</small>
+      <small>Your first card includes <code>dropblk.asm</code>. Existing cards are unchanged until you click Add DropBlocks (FAT16). <a href="dropblk.asm" download>Download source</a> for other cards or a real board. Insert card… accepts FAT16/FAT32 images up to 256 MB.</small>
     </section>
     <section class="panel">
       <h2>Quick start</h2>
@@ -89,7 +89,7 @@
         <tr><td><code>df</code>, <code>free</code>, <code>mem 8000 40</code></td><td>disk, memory, hex dump</td></tr>
         <tr><td><code>sdput</code>, <code>sdls</code>, <code>sdget</code>, <code>sdrm</code></td><td>SD card files</td></tr>
       </table>
-      <small>Files live in the 24 KiB RAM disk (XDATA 2000h–7FFFh). Programs, assembler output and the editor buffer use the upper 32 KiB, mapped into both XDATA and CODE.</small>
+      <small>Files live in the 24 KB RAM disk (XDATA 2000h–7FFFh). Programs, assembler output and the editor buffer use the upper 32 KB, mapped into both XDATA and CODE.</small>
     </section>
   </aside>
 </main>

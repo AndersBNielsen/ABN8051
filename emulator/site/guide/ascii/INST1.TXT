@@ -4,9 +4,9 @@
 
 ACALL / FLOW
 ----------------------------------------
-Push the address after this instruction and call a target in the same
-2-KiB page as that return address. Uses two internal stack bytes; no
-automatic register saves.
+Push the address after this instruction and call a target in the same 2-KB
+page as that return address. Uses two internal stack bytes; no automatic
+register saves.
 
 Example: acall worker
 Watch: Use LCALL if placement is not guaranteed. Page bits are checked
@@ -46,7 +46,7 @@ ADDC A,Rn                          1    1  CY AC OV
 
 AJMP / FLOW
 ----------------------------------------
-Jump within the 2-KiB page containing the first byte after this
+Jump within the 2-KB page containing the first byte after this
 instruction. Does not push a return address.
 
 Example: ajmp destination
@@ -275,7 +275,7 @@ JZ rel                             2    2  -
 
 LCALL / FLOW
 ----------------------------------------
-Push the return PC and call any address in the 64-KiB CODE space.
+Push the return PC and call any address in the 64-KB CODE space.
 
 Example: lcall worker
 Watch: The stack is internal RAM. Budget two return-address bytes plus

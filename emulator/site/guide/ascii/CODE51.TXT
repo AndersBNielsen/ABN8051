@@ -13,7 +13,7 @@ Starting R7 at zero executes 256 iterations, not zero. DJNZ changes no
 arithmetic flags. Conditional branches and SJMP have a signed -128..+127
 byte displacement measured from the instruction AFTER the branch. For a
 far condition, invert the test and use LJMP. AJMP/ACALL require the target
-to share the 2-KiB page of the NEXT instruction, so code near a page
+to share the 2-KB page of the NEXT instruction, so code near a page
 boundary needs special care.
 
 UNSIGNED COMPARE

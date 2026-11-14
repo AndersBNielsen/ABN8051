@@ -5,7 +5,7 @@
 WHAT THE EMULATOR ACTUALLY MODELS
 Classic 80C31 CPU, 128-byte internal RAM, Timer 0/1, baseline interrupt
 controller, UART and power-control states. The board adds an external
-32-KiB ROM and two 32-KiB SRAMs, then implements SD-card SPI in software.
+32-KB ROM and two 32-KB SRAMs, then implements SD-card SPI in software.
 Timer 2, dual DPTR, enhanced address-recognition UART, IPH and analog
 electrical behavior are not modeled. Reading the Philips extensions
 chapter is not proof that those features run in this emulator.
@@ -15,7 +15,7 @@ CODE  0000-7FFF : DOS/51 ROM
 CODE  8000-FFFF : upper SRAM (executable)
 XDATA 0000-7FFF : lower SRAM (data)
 XDATA 8000-FFFF : same upper SRAM as CODE
-The RAM disk uses XDATA 2000-7FFF (24 KiB). Application/assembler/editor
+The RAM disk uses XDATA 2000-7FFF (24 KB). Application/assembler/editor
 storage uses the upper SRAM. Firmware state also occupies
 internal/external RAM: those bytes are not all free application scratch
 space.
@@ -36,7 +36,7 @@ firmware access, but the browser-side installer is FAT16-only.
 
 Remove an imported chapter from the RAM disk when done; the SD copy
 remains. The full manual is split into small files because the RAM disk is
-only 24 KiB and may already contain your work. If sdget reports
+only 24 KB and may already contain your work. If sdget reports
 insufficient space, save/delete unneeded RAM files first; do not blank the
 card to solve a RAM-disk capacity problem. Use the online edition for
 search and the complete opcode table. Download card saves the actual FAT16

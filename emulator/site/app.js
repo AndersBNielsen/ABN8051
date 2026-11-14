@@ -31,14 +31,14 @@ const dropBlocksSource = new Uint8Array(await fetch('dropblk.asm').then((r) => {
   return r.arrayBuffer();
 }));
 // The field manual is fetched once; installing never replaces a visitor's files.
-const guideManifest = await fetch('guide/manifest.json?v=20261114lf').then(r => {
+const guideManifest = await fetch('guide/manifest.json?v=20261114kb').then(r => {
   if (!r.ok) throw new Error(`Guide manifest fetch failed: ${r.status}`);
   return r.json();
 });
-const guideFiles = await Promise.all(guideManifest.map(async ({ name }) => {
-  const r = await fetch(`guide/ascii/${name}?v=20261114lf`);
+const guideFiles = await Promise.all(guideManifest.map(async ({ name, legacy = [] }) => {
+  const r = await fetch(`guide/ascii/${name}?v=20261114kb`);
   if (!r.ok) throw new Error(`Guide chapter fetch failed: ${r.status}`);
-  return { name, data: new Uint8Array(await r.arrayBuffer()) };
+  return { name, data: new Uint8Array(await r.arrayBuffer()), legacy: legacy.map(text => new TextEncoder().encode(text)) };
 }));
 const board = new Board({ rom, rxPacing: 'flow' });
 let restored = false;
@@ -47,7 +47,7 @@ try {
   if (saved) { board.setState(JSON.parse(saved)); board.reset(); restored = true; }
 } catch { /* corrupt or unavailable storage: cold boot */ }
 
-// ---- virtual SD card on P1.4-P1.7, kept in IndexedDB in 64 KiB chunks
+// ---- virtual SD card on P1.4-P1.7, kept in IndexedDB in 64 KB chunks
 // (only chunks that were ever written are stored, so a blank card is small)
 const CARD_MB = 16;
 const CHUNK = 65536;
@@ -180,7 +180,7 @@ $('file').onchange = async () => {
   const f = $('file').files[0];
   $('file').value = '';
   if (!f) return;
-  if (f.size > 20000) { alert('Files must be under 20,000 bytes: the RAM disk is 24 KiB in total.'); return; }
+  if (f.size > 20000) { alert('Files must be under 20,000 bytes: the RAM disk is 24 KB in total.'); return; }
   let name = f.name.replace(/[^A-Za-z0-9._-]/g, '').toLowerCase();
   const dot = name.lastIndexOf('.');
   if (name.length > 11) name = dot > 0 ? name.slice(0, Math.max(1, 11 - (name.length - dot))) + name.slice(dot) : name.slice(0, 11);
@@ -211,7 +211,7 @@ $('guideinstall').onclick = () => {
     const ranges = [];
     let added = 0, repaired = 0;
     for (const file of guideFiles) {
-      const result = installGuideFile(candidate, file.name, file.data, (off, len) => ranges.push([off, len]));
+      const result = installGuideFile(candidate, file.name, file.data, (off, len) => ranges.push([off, len]), file.legacy);
       if (result === 'added') added++;
       if (result === 'repaired') repaired++;
     }
@@ -245,18 +245,18 @@ $('cardfile').onchange = async () => {
   $('cardfile').value = '';
   if (!f) return;
   if (f.size === 0 || f.size % 512 || f.size > 256 * 1024 * 1024) {
-    alert('Card images must be a multiple of 512 bytes and at most 256 MiB.');
+    alert('Card images must be a multiple of 512 bytes and at most 256 MB.');
     return;
   }
-  if (!confirm(`Replace the virtual SD card with ${f.name} (${(f.size / 1048576).toFixed(1)} MiB)? The current card's contents are discarded; download it first to keep them.`)) return;
+  if (!confirm(`Replace the virtual SD card with ${f.name} (${(f.size / 1048576).toFixed(1)} MB)? The current card's contents are discarded; download it first to keep them.`)) return;
   insertCard(new Uint8Array(await f.arrayBuffer()));
   term.write(`\r\n\x1b[2m[SD card replaced by ${f.name.replace(/[\x00-\x1f]/g, '')}]\x1b[0m\r\n`);
   term.focus();
 };
 $('cardnew').onclick = () => {
-  if (!confirm(`Insert a blank ${CARD_MB} MiB FAT16 card? Every file on the current virtual card is lost.`)) return;
+  if (!confirm(`Insert a blank ${CARD_MB} MB FAT16 card? Every file on the current virtual card is lost.`)) return;
   insertCard(formatCard(CARD_MB << 20));
-  term.write(`\r\n\x1b[2m[Blank ${CARD_MB} MiB SD card inserted – empty until you sdput]\x1b[0m\r\n`);
+  term.write(`\r\n\x1b[2m[Blank ${CARD_MB} MB SD card inserted – empty until you sdput]\x1b[0m\r\n`);
   term.focus();
 };
 

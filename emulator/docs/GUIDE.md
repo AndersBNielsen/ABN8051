@@ -47,3 +47,5 @@ Verification:
   card and JavaScript errors. Uses an isolated browser profile; downloads stay
   in `/tmp`. Analytics requests are stubbed in this test; use the separate
   iMania analytics verifier for the actual overlay.
+
+Guide unit convention: use K/KB/MB/GB, preserving the traditional capacity numbers. Manifest legacy payloads let the installer recognize and update unchanged earlier editions; edited visitor files remain untouched.

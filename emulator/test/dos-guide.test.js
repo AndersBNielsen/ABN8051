@@ -64,3 +64,19 @@ test('manual installer repairs exact old CRLF editions but preserves user edits'
  const screen=h.waitFor('Loops, arithmetic, BCD, tables and contracts',{timeoutCycles:5*SEC});
  assert.ok(!screen.replace(/\x1b\[[?0-9;]*[A-Za-z]/g,'').includes('?'), 'nano must not render carriage-return question marks');
 });
+
+test('unit-wording updates replace exact shipped editions, not edited chapters',async()=>{
+ const {installGuideFile}=await import('../emu/guidefiles.js');
+ const manifest=JSON.parse(fs.readFileSync(new URL('../site/guide/manifest.json',import.meta.url)));
+ for(const f of manifest.filter(f=>f.legacy)){
+  const fresh=new Uint8Array(fs.readFileSync(new URL('../site/guide/ascii/'+f.name,import.meta.url)));
+  const variants=f.legacy.map(t=>new TextEncoder().encode(t));
+  for(const old of variants){
+   const image=formatCard(16<<20);putFat16File(image,f.name,old);
+   assert.equal(installGuideFile(image,f.name,fresh,()=>{},variants),'repaired');
+   assert.equal(installGuideFile(image,f.name,fresh,()=>{},variants),'preserved');
+  }
+  const image=formatCard(16<<20);putFat16File(image,f.name,new TextEncoder().encode(f.legacy[0]+'my edits\n'));
+  const before=image.slice();assert.equal(installGuideFile(image,f.name,fresh,()=>{},variants),'preserved');assert.deepEqual(image,before);
+ }
+});
