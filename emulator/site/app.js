@@ -31,12 +31,12 @@ const dropBlocksSource = new Uint8Array(await fetch('dropblk.asm').then((r) => {
   return r.arrayBuffer();
 }));
 // The field manual is fetched once; installing never replaces a visitor's files.
-const guideManifest = await fetch('guide/manifest.json?v=20261114kb').then(r => {
+const guideManifest = await fetch('guide/manifest.json?v=20261114mem').then(r => {
   if (!r.ok) throw new Error(`Guide manifest fetch failed: ${r.status}`);
   return r.json();
 });
 const guideFiles = await Promise.all(guideManifest.map(async ({ name, legacy = [] }) => {
-  const r = await fetch(`guide/ascii/${name}?v=20261114kb`);
+  const r = await fetch(`guide/ascii/${name}?v=20261114mem`);
   if (!r.ok) throw new Error(`Guide chapter fetch failed: ${r.status}`);
   return { name, data: new Uint8Array(await r.arrayBuffer()), legacy: legacy.map(text => new TextEncoder().encode(text)) };
 }));

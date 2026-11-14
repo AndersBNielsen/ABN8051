@@ -19,11 +19,41 @@ INTERNAL MAP (128-byte 80C31)
 30-7F  general RAM and stack, allocated by your program
 80-FF  directly addressed SFRs, NOT another 128 RAM bytes
 
-PSW.RS1:RS0 selects the register bank. R3 means the third numbered
-register in the CURRENT bank, not invariably address 03. Internal indirect
-MOV A,@R0 and MOV @R1,A use RAM only; on an 80C31 there is no upper 80-FF
-internal RAM. Never use an indirect pointer above 7F as an SFR shortcut.
-An 80C32's extra RAM is a different device feature.
+WHAT IS A REGISTER BANK?
+The working registers R0-R7 are eight names for eight bytes in internal
+RAM. There are four sets of those bytes, called register banks. Only one
+bank is selected at a time. Selecting another bank changes which RAM bytes
+the names refer to; it does not copy or erase their contents.
+
+For example, with bank 0 selected, MOV A,R3 reads internal RAM address
+0x03. With bank 1 selected, the same instruction reads address 0x0B. R3 is
+register number 3 (the fourth register, because numbering starts at zero).
+By contrast, MOV A,0x03 always reads address 0x03, regardless of the
+selected bank.
+
+HOW THE CPU SELECTS A BANK
+PSW stands for Program Status Word. It is a special function register: a
+byte used by the CPU for status flags and control settings, rather than
+ordinary data storage. Two of its bits select the register bank: RS1 is
+bit 4 and RS0 is bit 3. Written as RS1:RS0, they form a two-bit number:
+
+RS1 RS0  Selected bank  R0-R7 use RAM addresses  R3 uses
+ 0   0       0                00-07                03
+ 0   1       1                08-0F                0B
+ 1   0       2                10-17                13
+ 1   1       3                18-1F                1B
+
+Reset selects bank 0. Other banks can give interrupt handlers their own
+working registers, but software must manage the selection and reserve the
+RAM. In DOS/51, do not casually switch banks or overwrite these bytes: the
+running firmware also uses internal RAM and the stack.
+
+WHAT DOES INDIRECT ADDRESSING MEAN?
+A direct operand names the address in the instruction itself: MOV A,0x30
+reads RAM address 0x30. An indirect operand instead uses an address held
+in a register. After MOV R0,#0x30, MOV A,@R0 reads that same RAM byte. The
+@ means 'use the address stored in this register'; ordinary indirect MOV
+supports R0 or R1, not any arbitrary register.
 
 Addressing examples:
     mov a,#0x30      ; A = literal 48
@@ -34,6 +64,19 @@ Addressing examples:
     movx a,@dptr     ; external DATA byte at 1234
     clr a
     movc a,@a+dptr   ; CODE byte at 1234
+
+ORDINARY MOV: RAM OR A HARDWARE REGISTER?
+The 80C31 has only 128 bytes of internal RAM, at 00-7F. Addresses 80-FF
+select special function registers (SFRs) only when used as DIRECT
+operands. These SFRs control hardware such as ports and timers. For
+instance, MOV A,0x90 reads the Port 1 register, P1.
+
+Ordinary indirect MOV does not use that SFR address space. Loading R0 with
+0x90 and executing MOV A,@R0 therefore does NOT read P1: it attempts to
+read an internal RAM byte that does not exist on this 80C31. The 80C32 is
+different: it adds another 128 internal RAM bytes at indirect addresses
+80-FF. That extra RAM still does not turn indirect accesses into SFR
+accesses. Choose both the address AND the addressing mode deliberately.
 
 MOVX through @R0/@R1 uses an 8-bit low address; classic external hardware
 uses P2's latch for the high address. MOVX @DPTR uses all 16 address bits.
