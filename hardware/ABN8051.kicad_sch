@@ -22016,7 +22016,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Button_Switch_SMD:SW_SPST_TL3342"
+		(property "Footprint" "ABN8051:SW_SPST_TL3342_or_3x6mm"
 			(at 33.02 140.97 0)
 			(hide yes)
 			(show_name no)
@@ -22050,6 +22050,17 @@
 			)
 		)
 		(property "LCSC" "C318884"
+			(at 33.02 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Alt" "3x6 mm 2-pin SMD tact switch (iMania FC-003D-5.0, 7342)"
 			(at 33.02 140.97 0)
 			(hide yes)
 			(show_name no)
@@ -25236,7 +25247,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Button_Switch_SMD:SW_SPST_TL3342"
+		(property "Footprint" "ABN8051:SW_SPST_TL3342_or_3x6mm"
 			(at 91.44 166.37 0)
 			(hide yes)
 			(show_name no)
@@ -25270,6 +25281,17 @@
 			)
 		)
 		(property "LCSC" "C318884"
+			(at 91.44 166.37 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Alt" "3x6 mm 2-pin SMD tact switch (iMania FC-003D-5.0, 7342)"
 			(at 91.44 166.37 0)
 			(hide yes)
 			(show_name no)
@@ -29316,7 +29338,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Button_Switch_SMD:SW_SPST_TL3342"
+		(property "Footprint" "ABN8051:SW_SPST_TL3342_or_3x6mm"
 			(at 91.44 156.21 0)
 			(hide yes)
 			(show_name no)
@@ -29350,6 +29372,17 @@
 			)
 		)
 		(property "LCSC" "C318884"
+			(at 91.44 156.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Alt" "3x6 mm 2-pin SMD tact switch (iMania FC-003D-5.0, 7342)"
 			(at 91.44 156.21 0)
 			(hide yes)
 			(show_name no)
