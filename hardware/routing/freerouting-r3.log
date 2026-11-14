@@ -1,0 +1,55 @@
+2026-11-14 05:44:34.609 INFO   Freerouting v2.5.0 (build-date: 2026-10-05)
+2026-11-14 05:44:34.861 INFO   Hardware: 12 CPU cores, 559 CPU score, 6144 MB RAM
+2026-11-14 05:44:34.861 WARN   Deprecated settings path '-mp / --router.max_passes'; use '--router.autorouter.max_passes' instead. The old path will be removed in a future release.
+2026-11-14 05:44:34.862 WARN   GUI is disabled and you don't have a console available, so the only feedback from Freerouting is in the log.
+2026-11-14 05:44:35.922 WARN   Deprecated settings path 'router.max_passes'; use 'router.autorouter.max_passes' instead. The old path will be removed in a future release.
+2026-11-14 05:44:36.181 INFO   [05CBD1\BAADBD] Loading board file 'ABN8051.dsn'...
+2026-11-14 05:44:36.254 INFO   [05CBD1\BAADBD] Job '05CBD1\BAADBD' started at 2026-11-14T04:44:36.254038Z.
+2026-11-14 05:44:36.297 WARN   Design Warning: Board has 8 pre-existing clearance violation(s) in the loaded design (before routing):
+  - 8 unfixable violation(s) (cannot be resolved by Freerouting):
+      * 8 pin-to-pin clearance violations (first 5 shown):
+          - J1.B12 [net GND] <-> J1.B9 [net /VBUS]
+          - J1.B12 [net GND] <-> J1.A4 [net /VBUS]
+          - J1.B9 [net /VBUS] <-> J1.A1 [net GND]
+          - J1.B4 [net /VBUS] <-> J1.B1 [net GND]
+          - J1.B4 [net /VBUS] <-> J1.A12 [net GND]
+          ... and 3 more
+  - 0 potentially fixable violations
+Notice: Freerouting does not modify component placement, board outlines, or fixed items.
+Resolving these 8 unfixable violation(s) is the responsibility of the board author in their EDA tool (e.g. KiCad).
+2026-11-14 05:44:36.315 INFO   [05CBD1\BAADBD] Pipeline thread limits: autorouter pass is single-threaded, optimizer.max_threads=11.
+2026-11-14 05:44:36.349 INFO   [05CBD1\BAADBD] Fanout stage started on board 'c19b43f3aef7995bcceb1af8f961f44d' with 190 of 203 SMD pins needing fanout (13 already connected, 0 netless).
+2026-11-14 05:44:37.228 INFO   [05CBD1\BAADBD] Fanout pass #1 on board 'bf110743e571dac997d9eb16093cfb69' completed in 0.85 seconds with 180 SMD pins fanouted, 0 not routed, 0 insert errors, +82 extra vias (0 SMD pins still to check in pass, ripup costs=100).
+2026-11-14 05:44:37.476 INFO   [05CBD1\BAADBD] Fanout pass #2 on board 'f2f041fc112e3c5fed0d8364b3e9003c' completed in 0.24 seconds with 23 SMD pins fanouted, 0 not routed, 0 insert errors, +6 extra vias (0 SMD pins still to check in pass, ripup costs=200).
+2026-11-14 05:44:37.613 INFO   [05CBD1\BAADBD] Fanout pass #3 on board '717dbc3221f45509d6efd144733e67fd' completed in 0.12 seconds with 11 SMD pins fanouted, 0 not routed, 0 insert errors, +1 extra via (0 SMD pins still to check in pass, ripup costs=300).
+2026-11-14 05:44:37.745 INFO   [05CBD1\BAADBD] Fanout pass #4 on board 'e1cbb724606100468e4e78b80e0353ba' completed in 0.12 seconds with 11 SMD pins fanouted, 0 not routed, 0 insert errors, +1 extra via (0 SMD pins still to check in pass, ripup costs=400).
+2026-11-14 05:44:37.847 INFO   [05CBD1\BAADBD] Fanout pass #5 on board 'ffccea9a0999568c7aaeebc66e742e9a' completed in 0.09 seconds with 8 SMD pins fanouted, 0 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=500).
+2026-11-14 05:44:37.945 INFO   [05CBD1\BAADBD] Fanout pass #6 on board 'b73dedfc192e9d798b538a85048729f7' completed in 0.09 seconds with 8 SMD pins fanouted, 0 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=600).
+2026-11-14 05:44:38.045 INFO   [05CBD1\BAADBD] Fanout pass #7 on board '70237ab273af6e5203e77c34a5e5d7db' completed in 0.09 seconds with 8 SMD pins fanouted, 0 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=700).
+2026-11-14 05:44:38.144 INFO   [05CBD1\BAADBD] Fanout pass #8 on board 'f5844a6812b18fae8e3c1e79596f80b1' completed in 0.09 seconds with 8 SMD pins fanouted, 0 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=800).
+2026-11-14 05:44:38.145 INFO   Fanout stopped after 8 passes: no progress for 3 consecutive passes.
+2026-11-14 05:44:38.150 INFO   [05CBD1\BAADBD] Fanout stage completed: started with 203 total SMD pins, completed in 1.79 seconds, escaped pins: 186/203 (91.6%), using 1.79 total CPU seconds, 2.30 GB total allocated, and 405.0 MB peak heap usage.
+2026-11-14 05:44:38.181 INFO   [05CBD1\BAADBD] Auto-routing stage started on board 'f5844a6812b18fae8e3c1e79596f80b1' with baseline score 161.90 for 277 unrouted items.
+2026-11-14 05:44:46.377 INFO   [05CBD1\BAADBD] Auto-routing pass #1 on board 'f5844a6812b18fae8e3c1e79596f80b1' was completed in 8.17 seconds with score 748.42 (69 unrouted and 8 violations), using 9.98 CPU seconds and the job allocated 16.09 GB of memory so far.
+2026-11-14 05:44:53.612 INFO   [05CBD1\BAADBD] Auto-routing pass #2 on board '4506a707c577c011b8505fca0a0bbb5f' was completed in 7.21 seconds with score 879.56 (33 unrouted and 8 violations), using 16.99 CPU seconds and the job allocated 28.86 GB of memory so far.
+2026-11-14 05:45:01.664 INFO   [05CBD1\BAADBD] Auto-routing pass #3 on board '5ef76eee7b9b9ff484ee135c34bd24e3' was completed in 8.01 seconds with score 926.92 (20 unrouted and 8 violations), using 25.00 CPU seconds and the job allocated 43.51 GB of memory so far.
+2026-11-14 05:45:07.404 INFO   [05CBD1\BAADBD] Auto-routing pass #4 on board '9bb0c943d929a273bb5f94ef4877729e' was completed in 5.70 seconds with score 977.93 (6 unrouted and 8 violations), using 29.99 CPU seconds and the job allocated 52.60 GB of memory so far.
+2026-11-14 05:45:09.523 INFO   [05CBD1\BAADBD] Auto-routing pass #5 on board '09588b37599e989896ad48d301ebff30' was completed in 2.08 seconds with score 981.57 (5 unrouted and 8 violations), using 32.97 CPU seconds and the job allocated 57.71 GB of memory so far.
+2026-11-14 05:45:11.356 INFO   [05CBD1\BAADBD] Auto-routing pass #6 on board '5af0e09cb95124720543d7515d0aad1e' was completed in 1.79 seconds with score 988.85 (3 unrouted and 8 violations), using 33.96 CPU seconds and the job allocated 59.38 GB of memory so far.
+2026-11-14 05:45:12.888 INFO   [05CBD1\BAADBD] Auto-routing pass #7 on board '19c95d7f2ab011e46714c6eaa938e9ac' was completed in 1.49 seconds with score 996.14 (1 unrouted and 8 violations), using 35.96 CPU seconds and the job allocated 62.89 GB of memory so far.
+2026-11-14 05:45:13.410 INFO   [05CBD1\BAADBD] Auto-routing pass #8 on board '9f40cc8463cec2b2f7173b02398c0589' was completed in 0.48 seconds with score 996.14 (1 unrouted and 8 violations), using 35.96 CPU seconds and the job allocated 62.89 GB of memory so far.
+2026-11-14 05:45:14.000 INFO   [05CBD1\BAADBD] Auto-routing pass #9 on board '17bbcb1a914205a52427f74c432c5978' was completed in 0.55 seconds with score 996.14 (1 unrouted and 8 violations), using 36.96 CPU seconds and the job allocated 64.43 GB of memory so far.
+2026-11-14 05:45:14.557 INFO   [05CBD1\BAADBD] Auto-routing pass #10 on board '10a642d9f2268aa5e6b320f04309eed8' was completed in 0.51 seconds with score 996.14 (1 unrouted and 8 violations), using 37.96 CPU seconds and the job allocated 66.06 GB of memory so far.
+2026-11-14 05:45:15.209 INFO   [05CBD1\BAADBD] Auto-routing pass #11 on board '7ede28a07fbfbcec863cc17260fedd44' was completed in 0.61 seconds with score 996.14 (1 unrouted and 8 violations), using 37.96 CPU seconds and the job allocated 66.06 GB of memory so far.
+2026-11-14 05:45:15.721 INFO   [05CBD1\BAADBD] Auto-routing pass #12 on board '92544641fd63fda315bbca9d30eca663' was completed in 0.40 seconds with score 999.78 (0 unrouted and 8 violations), using 38.96 CPU seconds and the job allocated 67.66 GB of memory so far.
+2026-11-14 05:45:15.799 INFO   [05CBD1\BAADBD] Auto-routing pass #13 on board 'ab576c6ce884cf446487d7e6664e36a5' was completed in 0.03 seconds with score 999.78 (0 unrouted and 8 violations), using 38.96 CPU seconds and the job allocated 67.66 GB of memory so far.
+2026-11-14 05:45:15.906 INFO   [05CBD1\BAADBD] Auto-routing stage completed: started with 362 unrouted nets, completed in 39.56 seconds, final score: 999.78 (0 unrouted and 8 violations), using 38.96 total CPU seconds, 67.66 GB total allocated, and 373.2 MB peak heap usage.
+2026-11-14 05:45:15.985 INFO   [05CBD1\BAADBD] Optimization stage started on board 'ab576c6ce884cf446487d7e6664e36a5'. Baseline router score: 999.78, optimizer score: 181.21, incomplete connections: 0, clearance violations: 8.
+2026-11-14 05:45:39.243 INFO   [05CBD1\BAADBD] Stopping optimization pass #1 early after 12 consecutive items could not be improved.
+2026-11-14 05:45:39.357 INFO   [05CBD1\BAADBD] Optimizer pass #1 on board 'ddb81569db4ae8fdbd1b0294710dd47d' was completed in 23.20 seconds with the score of 184.58 (0 unrouted and 8 violations).
+2026-11-14 05:45:39.394 INFO   [05CBD1\BAADBD] Optimizer pass #1: optimizer score 181.21 -> 184.58 (IMPROVED, 1.8590%), router score: 999.78, incomplete connections: 0, clearance violations: 8.
+2026-11-14 05:45:39.394 INFO   [05CBD1\BAADBD] Stopping optimizer because the improvement in this pass (1.8590%) is below the threshold (2.50%).
+2026-11-14 05:45:39.453 INFO   [05CBD1\BAADBD] Optimization stage completed:. Baseline router score: 999.78, baseline optimizer score: 181.21, final router score: 999.78, final optimizer score: 184.58, completed in 23.44 seconds, using 180.81 total CPU seconds, 177.47 GB total allocated, and 950.4 MB peak heap usage.
+2026-11-14 05:45:39.464 INFO   [05CBD1\BAADBD] Job '05CBD1\BAADBD' finished with state: COMPLETED (elapsed: 1 minute 3.21 seconds, finished at UTC: 2026-11-14T04:45:39.464235Z).
+2026-11-14 05:45:39.487 INFO   Saving output file '/Users/abn/.openclaw/workspace/tmp/abn8051-route-20261114-0538/ABN8051-r3.ses' (SES)...
+2026-11-14 05:45:39.489 INFO   Successfully saved output file '/Users/abn/.openclaw/workspace/tmp/abn8051-route-20261114-0538/ABN8051-r3.ses' (142089 bytes).
