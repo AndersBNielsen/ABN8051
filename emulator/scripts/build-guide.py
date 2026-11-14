@@ -87,7 +87,11 @@ textfile('GUIDE51.TXT','IMANIA // FIELD ARCHIVE 8051 // VOL. 01',index)
 manifest=[{'name':p.name,'bytes':p.stat().st_size} for p in sorted(ascii_dir.glob('*.TXT'))]
 (out/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
 with zipfile.ZipFile(out/'8051-field-manual.zip','w',zipfile.ZIP_DEFLATED) as z:
- for p in sorted(ascii_dir.glob('*.TXT')):z.write(p,p.name)
+ for p in sorted(ascii_dir.glob('*.TXT')):
+  info=zipfile.ZipInfo(p.name,date_time=(2026,11,14,0,0,0))
+  info.compress_type=zipfile.ZIP_DEFLATED
+  info.external_attr=0o100644 << 16
+  z.writestr(info,p.read_bytes())
 nav=''.join(f'<a href="#{c["id"]}">{e(c["title"])}</a>' for c in data['chapters'])
 nav=nav.replace('<a href="#recipes">','<a href="#instructions">03 / Every instruction</a><a href="#recipes">')
 parts=[]
